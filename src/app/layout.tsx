@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans, Lora } from "next/font/google";
+import { JetBrains_Mono, Figtree, Roboto_Slab } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { ImpersonationIndicator } from "@/components/auth/impersonation-indicator";
 
-const loraHeading = Lora({ subsets: ["latin"], variable: "--font-heading" });
-
-const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
-
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const fontSans = Figtree({
 	subsets: ["latin"],
+	variable: "--font-sans",
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const fontSerif = Roboto_Slab({
 	subsets: ["latin"],
+	variable: "--font-serif",
+});
+
+const fontMono = JetBrains_Mono({
+	subsets: ["latin"],
+	variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -33,13 +34,7 @@ export default function RootLayout({
 		<html
 			lang='en'
 			className={cn(
-				"h-full",
-				"antialiased",
-				geistSans.variable,
-				geistMono.variable,
-				"font-sans",
-				notoSans.variable,
-				loraHeading.variable,
+				`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} h-full antialiased`,
 			)}
 		>
 			<body className='min-h-full flex flex-col'>
