@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
+import { BsBorderWidth } from "react-icons/bs";
 import {
   FILL_COLOR,
   type ActiveTool,
@@ -23,7 +24,7 @@ export const Toolbar = ({
 
   if (editor?.selectedObjects.length === 0) {
     return (
-      <div className='shrink-0 h-14 border-b bg-white w-full flex items-center overflow-x-auto z-49 p-2 gap-x-2' />
+      <div className='shrink-0 h-14 border-b border-transparent bg-transparent w-full flex items-center overflow-x-auto z-49 p-2 gap-x-2' />
     );
   }
 
@@ -48,7 +49,7 @@ export const Toolbar = ({
         </Hint>
       </div>
       <div className='flex items-center h-full justify-center'>
-        <Hint label='StrokeColor' side='bottom' sideOffset={5}>
+        <Hint label='Stroke Color' side='bottom' sideOffset={5}>
           <Button
             onClick={() => onChangeActiveTool("stroke-color")}
             size='icon'
@@ -62,6 +63,18 @@ export const Toolbar = ({
                   typeof strokeColor === "string" ? strokeColor : "#000000",
               }}
             />
+          </Button>
+        </Hint>
+      </div>
+      <div className='flex items-center h-full justify-center'>
+        <Hint label='Stroke Width' side='bottom' sideOffset={5}>
+          <Button
+            onClick={() => onChangeActiveTool("stroke-width")}
+            size='icon'
+            variant='ghost'
+            className={cn(activeTool === "stroke-width" && "bg-gray-100")}
+          >
+            <BsBorderWidth className="size-5" /> 
           </Button>
         </Hint>
       </div>

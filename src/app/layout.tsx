@@ -34,7 +34,11 @@ export default function RootLayout({
 		<html
 			lang='en'
 			className={cn(
-				`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} h-full antialiased`,
+				"h-full",
+				"antialiased",
+				fontSans.variable,
+				fontSerif.variable,
+				fontMono.variable,
 			)}
 		>
 			<body className='min-h-full flex flex-col'>

@@ -8,8 +8,8 @@ export const ToolSidebarHeader = ({
   description,
 }: ToolSidebarHeaderProps) => {
   return (
-    <div className='p-4 border-b space-y-1 h-[68px]'>
-      <p className='text-sm font-medium'>{title}</p>
+    <div className='py-2 px-4 border-b h-14'>
+      <p className='text-md font-semibold'>{title}</p>
       {description && (
         <p className='text-xs text-muted-foreground'>{description}</p>
       )}

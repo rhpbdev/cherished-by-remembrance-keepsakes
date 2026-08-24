@@ -15,6 +15,7 @@ export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
         color={value}
         onChange={(color) => onChange(color)}
         onChangeEnd={() => onChange(value)}
+        style={{ width: "100%" }}
       />
       <div className='mt-4 flex flex-wrap gap-2'>
         {colorMap.map((color) => (
