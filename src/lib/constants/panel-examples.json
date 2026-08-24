@@ -1,0 +1,67 @@
+{
+	"totalPanels": 6,
+	"showMargins": true,
+	"showGutters": false,
+	"panels": [
+		{
+			"panelNumber": 1,
+			"label": "Front Cover",
+			"width": 550,
+			"height": 1056,
+			"safeZone": 50,
+			"bleedSize": 75,
+			"gutterSize": 100,
+			"marginSize": 50
+		},
+		{
+			"panelNumber": 2,
+			"label": "Inside Left",
+			"width": 550,
+			"height": 1056,
+			"safeZone": 50,
+			"bleedSize": 75,
+			"gutterSize": 100,
+			"marginSize": 50
+		},
+		{
+			"panelNumber": 3,
+			"label": "Center Panel",
+			"width": 532,
+			"height": 1056,
+			"safeZone": 50,
+			"bleedSize": 75,
+			"gutterSize": 100,
+			"marginSize": 50
+		},
+		{
+			"panelNumber": 4,
+			"label": "Inside Right",
+			"width": 550,
+			"height": 1056,
+			"safeZone": 50,
+			"bleedSize": 75,
+			"gutterSize": 100,
+			"marginSize": 50
+		},
+		{
+			"panelNumber": 5,
+			"label": "Back Left",
+			"width": 550,
+			"height": 1056,
+			"safeZone": 50,
+			"bleedSize": 75,
+			"gutterSize": 100,
+			"marginSize": 50
+		},
+		{
+			"panelNumber": 6,
+			"label": "Back Cover",
+			"width": 532,
+			"height": 1056,
+			"safeZone": 50,
+			"bleedSize": 75,
+			"gutterSize": 100,
+			"marginSize": 50
+		}
+	]
+}
