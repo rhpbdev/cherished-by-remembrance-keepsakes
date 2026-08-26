@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
 	type ActiveTool,
@@ -20,15 +20,14 @@ export const OpacitySidebar = ({
 	activeTool,
 	onChangeActiveTool,
 }: OpacitySidebarProps) => {
-	const initialValue = editor?.getActiveOpacity() || 1;
 	const selectedObject = useMemo(() => editor?.selectedObjects[0], [editor?.selectedObjects])
-	const [opacity, setOpacity] = useState<number>(initialValue);
+	const [opacity, setOpacity] = useState<number>(() => editor?.getActiveOpacity() ?? 1);
+	const [prevSelectedObject, setPrevSelectedObject] = useState(selectedObject);
 
-	useEffect(() => {
-		if (selectedObject) {
-			setOpacity(selectedObject.get("opacity") || 1);
-		}
-	}, [selectedObject]);
+	if (selectedObject !== prevSelectedObject) {
+		setPrevSelectedObject(selectedObject);
+		setOpacity(selectedObject?.get("opacity") ?? 1);
+	}
 
 	const onClose = () => {
 		onChangeActiveTool("select");
