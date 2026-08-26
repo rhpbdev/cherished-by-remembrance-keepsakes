@@ -9,6 +9,7 @@ export const Logo = () => {
           src='/cfmemories-logo-dove-only-black.webp'
           alt='CF Memories Logo'
           fill
+          sizes="(max-width: 768px) 100vw, 50vw"
           className='shrink-0 hover:opacity-75 transition'
           loading='eager'
           fetchPriority='high'
