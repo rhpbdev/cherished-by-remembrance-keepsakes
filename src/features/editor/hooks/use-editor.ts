@@ -43,9 +43,9 @@ const buildEditor = ({
 	setStrokeDashArray,
 }: BuildEditorProps): Editor => {
 	// Helper: finds the main canvas area (white background)
-  const getWorkspace = () => {
-    return canvas.getObjects().find((object) => object.name === "clip") as Rect;
-  };
+	const getWorkspace = () => {
+		return canvas.getObjects().find((object) => object.name === "clip") as Rect;
+	};
 
 	// Helper: Standard flow for adding new objects: 1. center → 2. add → 3. select → 4. render
 	const addToCanvas = (object: FabricObject) => {
@@ -187,6 +187,23 @@ const buildEditor = ({
 			canvas.getActiveObjects().forEach((object) => {
 				object.set({ strokeDashArray: value });
 			});
+			canvas.requestRenderAll();
+		},
+		getActiveOpacity: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return 1;
+			}
+
+			const value = selectedObject.opacity || 1;
+
+			return value;
+		},
+		changeOpacity: (value: number) => {
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ opacity: value });
+			})
 			canvas.requestRenderAll();
 		},
 		addCircle: () => {

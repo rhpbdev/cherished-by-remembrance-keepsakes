@@ -8,6 +8,7 @@ import {
 } from "@/features/editor/types";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
+import { RxTransparencyGrid } from "react-icons/rx";
 
 interface ToolbarProps {
 	editor: Editor | undefined;
@@ -37,7 +38,7 @@ export const Toolbar = ({
 						onClick={() => onChangeActiveTool("fill")}
 						size='icon'
 						variant='ghost'
-						className={cn(activeTool === "fill" && "bg-gray-100")}
+						className={cn(activeTool === "fill" && "bg-muted")}
 					>
 						<div
 							className='rounded-sm size-5 border'
@@ -55,7 +56,7 @@ export const Toolbar = ({
 						onClick={() => onChangeActiveTool("stroke-color")}
 						size='icon'
 						variant='ghost'
-						className={cn(activeTool === "stroke-color" && "bg-gray-100")}
+						className={cn(activeTool === "stroke-color" && "bg-muted")}
 					>
 						<div
 							className='rounded-sm size-5 border-3 bg-white'
@@ -73,7 +74,7 @@ export const Toolbar = ({
 						onClick={() => onChangeActiveTool("stroke-width")}
 						size='icon'
 						variant='ghost'
-						className={cn(activeTool === "stroke-width" && "bg-gray-100")}
+						className={cn(activeTool === "stroke-width" && "bg-muted")}
 					>
 						<TbStrokeStraight className='size-6' />
 					</Button>
@@ -109,6 +110,18 @@ export const Toolbar = ({
 						variant='ghost'
 					>
 						<TbFocusCentered className='size-5' />
+					</Button>
+				</Hint>
+			</div>
+			<div className='flex items-center h-full justify-center'>
+				<Hint label='Opacity' side='bottom' sideOffset={5}>
+					<Button
+						onClick={() => onChangeActiveTool("opacity")}
+						size='icon'
+						variant='ghost'
+						className={cn(activeTool === "opacity" && "bg-muted")}
+					>
+						<RxTransparencyGrid className='size-5' />
 					</Button>
 				</Hint>
 			</div>

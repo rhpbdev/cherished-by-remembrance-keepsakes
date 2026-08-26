@@ -119,10 +119,12 @@ export interface Editor {
 	changeStrokeColor: (value: string) => void;
 	changeStrokeWidth: (value: number) => void;
 	changeStrokeDashArray: (value: number[]) => void;
+	changeOpacity: (value: number) => void;
 	getActiveFillColor: () => string;
 	getActiveStrokeColor: () => string;
 	getActiveStrokeWidth: () => number;
 	getActiveStrokeDashArray: () => number[];
+	getActiveOpacity: () => number;
     centerFabricObject: () => void;
 	bringForward: () => void;
 	sendBackward: () => void;
