@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import {
 	type ActiveTool,
@@ -20,7 +20,7 @@ export const OpacitySidebar = ({
 	activeTool,
 	onChangeActiveTool,
 }: OpacitySidebarProps) => {
-	const selectedObject = useMemo(() => editor?.selectedObjects[0], [editor?.selectedObjects])
+	const selectedObject = editor?.selectedObjects[0];
 	const [opacity, setOpacity] = useState<number>(() => editor?.getActiveOpacity() ?? 1);
 	const [prevSelectedObject, setPrevSelectedObject] = useState(selectedObject);
 
