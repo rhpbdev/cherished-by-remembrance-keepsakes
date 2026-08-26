@@ -70,6 +70,7 @@ export const useCanvasEvents = ({
         vpt[5];
 
       const ctx = canvas.contextContainer;
+      if (!ctx) return;
       ctx.save();
       ctx.strokeStyle = '#ad46ff';
       ctx.lineWidth = 3;
