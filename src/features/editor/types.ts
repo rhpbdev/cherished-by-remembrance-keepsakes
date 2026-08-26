@@ -103,33 +103,50 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
-	canvas: Canvas;
-	fillColor: string;
-	strokeColor: string;
-	strokeWidth: number;
-	selectedObjects: FabricObject[];
+	// --- Viewport ---
 	autoZoom: () => void;
+	zoomIn: () => void;
+	zoomOut: () => void;
+
+	// --- Shape creation ---
 	addCircle: () => void;
 	addDiamond: () => void;
 	addRectangle: () => void;
 	addRectangleRounded: () => void;
 	addTriangle: () => void;
 	addTriangleInverse: () => void;
-	changeFillColor: (value: string) => void;
-	changeStrokeColor: (value: string) => void;
-	changeStrokeWidth: (value: number) => void;
-	changeStrokeDashArray: (value: number[]) => void;
-	changeOpacity: (value: number) => void;
-	getActiveFillColor: () => string;
-	getActiveStrokeColor: () => string;
-	getActiveStrokeWidth: () => number;
-	getActiveStrokeDashArray: () => number[];
-	getActiveOpacity: () => number;
-    centerFabricObject: () => void;
+
+	// --- Arrangement (layer order & positioning) ---
 	bringForward: () => void;
 	sendBackward: () => void;
-	zoomIn: () => void;
-	zoomOut: () => void;
+	centerFabricObject: () => void;
+
+	// --- Appearance: fill ---
+	getActiveFillColor: () => string;
+	changeFillColor: (value: string) => void;
+
+	// --- Appearance: stroke color ---
+	getActiveStrokeColor: () => string;
+	changeStrokeColor: (value: string) => void;
+
+	// --- Appearance: stroke width ---
+	getActiveStrokeWidth: () => number;
+	changeStrokeWidth: (value: number) => void;
+
+	// --- Appearance: stroke dash array ---
+	getActiveStrokeDashArray: () => number[];
+	changeStrokeDashArray: (value: number[]) => void;
+
+	// --- Appearance: opacity ---
+	getActiveOpacity: () => number;
+	changeOpacity: (value: number) => void;
+
+	// --- State passthrough ---
+	canvas: Canvas;
+	fillColor: string;
+	strokeColor: string;
+	strokeWidth: number;
+	selectedObjects: FabricObject[];
 }
 
 // 1. TypeScript Module Augmentation (Prevents IDE compilation errors) to extend Fabric.js interfaces

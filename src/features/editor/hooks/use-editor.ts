@@ -66,37 +66,9 @@ const buildEditor = ({
 	};
 
 	return {
+		// --- Viewport ---
 		autoZoom: () => {
 			autoZoom();
-		},
-		centerFabricObject: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) return;
-
-			center(selectedObject);
-			canvas.requestRenderAll();
-		},
-		bringForward: () => {
-			canvas.getActiveObjects().forEach((object) => {
-				canvas.bringObjectForward(object);
-			});
-
-			canvas.requestRenderAll();
-
-			const workspace = getWorkspace();
-			if (workspace) canvas.sendObjectToBack(workspace);
-		},
-		sendBackward: () => {
-			canvas.getActiveObjects().forEach((object) => {
-				canvas.sendObjectBackwards(object);
-			});
-
-			canvas.requestRenderAll();
-
-			const workspace = getWorkspace();
-			if (workspace) canvas.sendObjectToBack(workspace);
-			// TODO: Fix workspace overflow
 		},
 		zoomIn: () => {
 			let zoomRatio = canvas.getZoom();
@@ -110,102 +82,8 @@ const buildEditor = ({
 			const center = canvas.getCenterPoint();
 			canvas.zoomToPoint(center, zoomRatio < 0.2 ? 0.2 : zoomRatio);
 		},
-		getActiveFillColor: () => {
-			const selectedObject = selectedObjects[0];
 
-			if (!selectedObject) {
-				return fillColor;
-			}
-
-			const value = selectedObject.fill || fillColor;
-
-			// Gradients & patterns are returned as an object, so we need to handle that case separately.
-			// For now, we will just return the default fill color as a string.
-			return value as string;
-		},
-		getActiveStrokeColor: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return strokeColor;
-			}
-
-			const value = selectedObject.stroke || strokeColor;
-
-			return value as string;
-		},
-		getActiveStrokeWidth: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return strokeWidth;
-			}
-
-			const value = selectedObject.strokeWidth || strokeWidth;
-
-			return value;
-		},
-		getActiveStrokeDashArray: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return strokeDashArray;
-			}
-
-			const value = selectedObject.strokeDashArray || strokeDashArray;
-
-			return value as number[];
-		},
-		changeFillColor: (value: string) => {
-			setFillColor(value);
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ fill: value });
-			});
-
-			canvas.requestRenderAll();
-		},
-		changeStrokeColor: (value: string) => {
-			setStrokeColor(value);
-			canvas.getActiveObjects().forEach((object) => {
-				if (isTextType(object.type)) {
-					object.set({ fill: value });
-					return;
-				}
-				object.set({ stroke: value });
-			});
-			canvas.requestRenderAll();
-		},
-		changeStrokeWidth: (value: number) => {
-			setStrokeWidth(value);
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ strokeWidth: value });
-			});
-			canvas.requestRenderAll();
-		},
-		changeStrokeDashArray: (value: number[]) => {
-			setStrokeDashArray(value);
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ strokeDashArray: value });
-			});
-			canvas.requestRenderAll();
-		},
-		getActiveOpacity: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return 1;
-			}
-
-			const value = selectedObject.opacity || 1;
-
-			return value;
-		},
-		changeOpacity: (value: number) => {
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ opacity: value });
-			})
-			canvas.requestRenderAll();
-		},
+		// --- Shape creation ---
 		addCircle: () => {
 			const object = new Circle({
 				...CIRCLE_OPTIONS,
@@ -295,10 +173,154 @@ const buildEditor = ({
 
 			addToCanvas(object);
 		},
+
+		// --- Text creation ---
+		addText: () => {
+
+		},
+
+		// --- Arrangement (layer order & positioning) ---
+		bringForward: () => {
+			canvas.getActiveObjects().forEach((object) => {
+				canvas.bringObjectForward(object);
+			});
+
+			canvas.requestRenderAll();
+
+			const workspace = getWorkspace();
+			if (workspace) canvas.sendObjectToBack(workspace);
+		},
+		sendBackward: () => {
+			canvas.getActiveObjects().forEach((object) => {
+				canvas.sendObjectBackwards(object);
+			});
+
+			canvas.requestRenderAll();
+
+			const workspace = getWorkspace();
+			if (workspace) canvas.sendObjectToBack(workspace);
+			// TODO: Fix workspace overflow
+		},
+		centerFabricObject: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) return;
+
+			center(selectedObject);
+			canvas.requestRenderAll();
+		},
+
+		// --- Appearance: fill ---
+		getActiveFillColor: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return fillColor;
+			}
+
+			const value = selectedObject.fill || fillColor;
+
+			// Gradients & patterns are returned as an object, so we need to handle that case separately.
+			// For now, we will just return the default fill color as a string.
+			return value as string;
+		},
+		changeFillColor: (value: string) => {
+			setFillColor(value);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ fill: value });
+			});
+
+			canvas.requestRenderAll();
+		},
+
+		// --- Appearance: stroke color ---
+		getActiveStrokeColor: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeColor;
+			}
+
+			const value = selectedObject.stroke || strokeColor;
+
+			return value as string;
+		},
+		changeStrokeColor: (value: string) => {
+			setStrokeColor(value);
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fill: value });
+					return;
+				}
+				object.set({ stroke: value });
+			});
+			canvas.requestRenderAll();
+		},
+
+		// --- Appearance: stroke width ---
+		getActiveStrokeWidth: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeWidth;
+			}
+
+			const value = selectedObject.strokeWidth ?? strokeWidth;
+
+			return value;
+		},
+		changeStrokeWidth: (value: number) => {
+			setStrokeWidth(value);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ strokeWidth: value });
+			});
+			canvas.requestRenderAll();
+		},
+
+		// --- Appearance: stroke dash array ---
+		getActiveStrokeDashArray: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeDashArray;
+			}
+
+			const value = selectedObject.strokeDashArray || strokeDashArray;
+
+			return value as number[];
+		},
+		changeStrokeDashArray: (value: number[]) => {
+			setStrokeDashArray(value);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ strokeDashArray: value });
+			});
+			canvas.requestRenderAll();
+		},
+
+		// --- Appearance: opacity ---
+		getActiveOpacity: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return 1;
+			}
+
+			const value = selectedObject.opacity ?? 1;
+
+			return value;
+		},
+		changeOpacity: (value: number) => {
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ opacity: value });
+			});
+			canvas.requestRenderAll();
+		},
+
+		// --- State passthrough ---
 		canvas,
 		fillColor,
-		strokeWidth,
 		strokeColor,
+		strokeWidth,
 		selectedObjects,
 	};
 };
