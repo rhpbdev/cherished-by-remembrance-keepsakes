@@ -13,16 +13,13 @@ export const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
     const width = container.offsetWidth;
     const height = container.offsetHeight;
 
-    // 0. Bail on a zero-size container (hidden tab, collapsed panel, certain mount
-    // orderings). A 0 destination makes findScaleToFit return 0 → zoom 0 → a singular
-    // viewport transform that blanks the canvas and risks NaN/Infinity downstream.
-    // The ResizeObserver fires again with real dimensions once it's visible.
+    // 0. Bail on a zero-size container so findScaleToFit doesn't return NaN (which can happen with certain orderings)
     if (width === 0 || height === 0) return;
 
     // 1. Update canvas dimensions safely
     canvas.setDimensions({ width, height });
 
-    // 2. Locate your workspace bounding object
+    // 2. Locate workspace bounding object
     const localWorkspace = canvas
       .getObjects()
       .find((object) => object.name === 'clip');
@@ -70,12 +67,7 @@ export const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
       canvas.set({ clipPath: localWorkspace as Rect });
     }
 
-    // 8. Render synchronously, NOT via requestRenderAll().
-    // setDimensions() above rewrote the canvas element's width/height, which clears
-    // its bitmap immediately. requestRenderAll() only schedules the repaint for the
-    // NEXT animation frame, so the frame that is painted right now shows an empty
-    // canvas — that is the flicker. renderAll() repaints before this frame is
-    // composited, so the resize and the redraw land together.
+    // 8. Render synchronously, NOT via requestRenderAll() so the resize and redraw happen in the same frame, preventing flicker.
     canvas.renderAll();
   }, [canvas, container]);
 
@@ -83,10 +75,7 @@ export const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
     let resizeObserver: ResizeObserver | null = null;
 
     if (canvas && container) {
-      // Call autoZoom straight from the observer callback — no requestAnimationFrame
-      // hop. ResizeObserver callbacks are already delivered once per frame, after
-      // layout and before paint, so they coalesce bursts on their own; deferring to
-      // the next frame only guarantees a frame of stale canvas size.
+      // Call autoZoom straight from the observer callback
       resizeObserver = new ResizeObserver(() => {
         autoZoom();
       });
