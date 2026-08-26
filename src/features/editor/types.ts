@@ -93,13 +93,13 @@ export type BuildEditorProps = {
 	fillColor: string;
 	strokeColor: string;
 	strokeWidth: number;
-    strokeDashArray: number[];
+	strokeDashArray: number[];
 	selectedObjects: FabricObject[];
 	autoZoom: () => void;
 	setFillColor: (value: string) => void;
 	setStrokeColor: (value: string) => void;
 	setStrokeWidth: (value: number) => void;
-    setStrokeDashArray: (value: number[]) => void;
+	setStrokeDashArray: (value: number[]) => void;
 };
 
 export interface Editor {
@@ -118,11 +118,14 @@ export interface Editor {
 	changeFillColor: (value: string) => void;
 	changeStrokeColor: (value: string) => void;
 	changeStrokeWidth: (value: number) => void;
-    changeStrokeDashArray: (value: number[]) => void;
+	changeStrokeDashArray: (value: number[]) => void;
 	getActiveFillColor: () => string;
 	getActiveStrokeColor: () => string;
 	getActiveStrokeWidth: () => number;
-    getActiveStrokeDashArray: () => number[];
+	getActiveStrokeDashArray: () => number[];
+    centerFabricObject: () => void;
+	bringForward: () => void;
+	sendBackward: () => void;
 	zoomIn: () => void;
 	zoomOut: () => void;
 }
