@@ -2,24 +2,26 @@ import {
 	Canvas,
 	Circle,
 	FabricObject,
-	InteractiveFabricObject,
 	Polygon,
 	Rect,
 	Shadow,
+	Textbox,
 	Triangle,
+	InteractiveFabricObject,
 } from "fabric";
 import { useCallback, useMemo, useState } from "react";
 
 import {
 	CIRCLE_OPTIONS,
 	DIAMOND_OPTIONS,
-	EditorHookProps,
 	FILL_COLOR,
 	RECTANGLE_OPTIONS,
 	STROKE_COLOR,
 	STROKE_DASH_ARRAY,
 	STROKE_WIDTH,
+	TEXT_OPTIONS,
 	TRIANGLE_OPTIONS,
+	type EditorHookProps,
 	type BuildEditorProps,
 	type Editor,
 } from "@/features/editor/types";
@@ -176,7 +178,12 @@ const buildEditor = ({
 
 		// --- Text creation ---
 		addText: () => {
+			const object = new Textbox("Textbox", {
+				...TEXT_OPTIONS,
+				fill: fillColor,
+			});
 
+			addToCanvas(object);
 		},
 
 		// --- Arrangement (layer order & positioning) ---

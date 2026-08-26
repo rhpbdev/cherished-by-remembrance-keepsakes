@@ -1,4 +1,4 @@
-import { Canvas, FabricObject } from "fabric";
+import { Canvas, FabricObject, TextboxProps } from "fabric";
 
 export const selectionDependentTools = [
 	"fill",
@@ -44,6 +44,8 @@ export const FILL_COLOR = "rgba(0,0,0,1)";
 export const STROKE_COLOR = "rgba(0,0,0,1)";
 export const STROKE_WIDTH = 2;
 export const STROKE_DASH_ARRAY = [];
+export const FONT_FAMILY = "Arial";
+export const FONT_SIZE = 32;
 
 export const CIRCLE_OPTIONS = {
 	radius: 100,
@@ -59,6 +61,7 @@ export const DIAMOND_OPTIONS = {
 	top: 100,
 	fill: FILL_COLOR,
 	stroke: STROKE_COLOR,
+	strokeWidth: STROKE_WIDTH,
 	width: 284,
 	height: 284,
 	angle: 0,
@@ -69,6 +72,7 @@ export const RECTANGLE_OPTIONS = {
 	top: 100,
 	fill: FILL_COLOR,
 	stroke: STROKE_COLOR,
+	strokeWidth: STROKE_WIDTH,
 	width: 200,
 	height: 200,
 	angle: 0,
@@ -79,11 +83,22 @@ export const TRIANGLE_OPTIONS = {
 	top: 100,
 	fill: FILL_COLOR,
 	stroke: STROKE_COLOR,
+	strokeWidth: STROKE_WIDTH,
 	width: 200,
 	height: 200,
 	angle: 0,
 };
 
+export const TEXT_OPTIONS = {
+	// type: "textbox",
+	left: 100,
+	top: 100,
+	fill: FILL_COLOR,
+	fontSize: FONT_SIZE,
+	fontFamily: FONT_FAMILY,
+	width: 200,
+	height: 500
+};
 export interface EditorHookProps {
 	clearSelectionCallback?: () => void;
 }
@@ -115,6 +130,9 @@ export interface Editor {
 	addRectangleRounded: () => void;
 	addTriangle: () => void;
 	addTriangleInverse: () => void;
+
+	// --- Text creation ---
+	addText: (value: string, options?: TextboxProps) => void;
 
 	// --- Arrangement (layer order & positioning) ---
 	bringForward: () => void;
