@@ -29,7 +29,7 @@ interface User {
 }
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-06-24.dahlia",
+  apiVersion: "2026-07-29.dahlia",
 });
 
 export const auth = betterAuth({
@@ -109,7 +109,6 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    nextCookies(),
     twoFactor(),
     passkey(),
     adminPlugin({
@@ -161,6 +160,7 @@ export const auth = betterAuth({
         plans: STRIPE_PLANS,
       },
     }),
+    nextCookies(),
   ],
   database: drizzleAdapter(db, {
     provider: "pg",
