@@ -1,4 +1,4 @@
-import { Canvas, FabricObject, TextboxProps } from "fabric";
+import { Canvas, FabricObject, TextStyleDeclaration } from "fabric";
 
 export const selectionDependentTools = [
 	"fill",
@@ -132,7 +132,7 @@ export interface Editor {
 	addTriangleInverse: () => void;
 
 	// --- Text creation ---
-	addText: (value: string, options?: TextboxProps) => void;
+	addText: (value: string, options?: TextStyleDeclaration) => void;
 
 	// --- Arrangement (layer order & positioning) ---
 	bringForward: () => void;
