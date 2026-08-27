@@ -38,7 +38,7 @@ interface NavbarProps {
 
 export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
   return (
-    <nav className='w-full flex items-center p-2 sm:p-4 lg:p-6 h-[68px] gap-x-2 lg:gap-x-8 border-b lg:pl-[24px]'>
+    <nav className='w-full flex items-center p-2 sm:p-4 lg:p-6 h-[68px] gap-x-2 lg:gap-x-8 border-b lg:pl-[24px] bg-muted'>
       <Logo />
       <div className='w-full flex items-center gap-x-1 h-full'>
         <DropdownMenu modal={false}>
@@ -101,7 +101,7 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
               variant='ghost'
               size='icon'
               onClick={() => onChangeActiveTool("select")}
-              className={cn(activeTool === "select" && "bg-gray-100")}
+              className={cn(activeTool === "select" && "bg-primary hover:bg-primary/50")}
             >
               <MousePointerClickIcon className='size-4' />
             </Button>
@@ -111,7 +111,7 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
               variant='ghost'
               size='icon'
               onClick={() => {}} // TODO: Add functionality for this button
-              className='' // TODO: Add dynamic classes for active state, etc.
+              className='hover:bg-primary/50' // TODO: Add dynamic classes for active state, etc.
             >
               <Undo2Icon className='size-4' />
             </Button>
@@ -121,7 +121,7 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
               variant='ghost'
               size='icon'
               onClick={() => {}} // TODO: Add functionality for this button
-              className='' // TODO: Add dynamic classes for active state, etc.
+              className='hover:bg-primary/50' // TODO: Add dynamic classes for active state, etc.
             >
               <Redo2Icon className='size-4' />
             </Button>
