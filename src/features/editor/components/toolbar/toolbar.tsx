@@ -9,6 +9,7 @@ import {
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
 import { RxTransparencyGrid } from "react-icons/rx";
+import { isTextType } from '@/features/editor/utils';
 
 interface ToolbarProps {
 	editor: Editor | undefined;
@@ -23,6 +24,10 @@ export const Toolbar = ({
 }: ToolbarProps) => {
 	const fillColor = editor?.getActiveFillColor() || FILL_COLOR;
 	const strokeColor = editor?.getActiveStrokeColor() || FILL_COLOR;
+
+    const selectedObjectType = editor?.selectedObjects[0]?.type;
+
+    const isText = isTextType(selectedObjectType);
 
 	if (editor?.selectedObjects.length === 0) {
 		return (
@@ -50,36 +55,40 @@ export const Toolbar = ({
 					</Button>
 				</Hint>
 			</div>
-			<div className='flex items-center h-full justify-center'>
-				<Hint label='Stroke Color' side='bottom' sideOffset={5}>
-					<Button
-						onClick={() => onChangeActiveTool("stroke-color")}
-						size='icon'
-						variant='ghost'
-						className={cn(activeTool === "stroke-color" && "bg-muted")}
-					>
-						<div
-							className='rounded-sm size-5 border-3 bg-white'
-							style={{
-								borderColor:
-									typeof strokeColor === "string" ? strokeColor : "#000000",
-							}}
-						/>
-					</Button>
-				</Hint>
-			</div>
-			<div className='flex items-center h-full justify-center'>
-				<Hint label='Stroke Width' side='bottom' sideOffset={5}>
-					<Button
-						onClick={() => onChangeActiveTool("stroke-width")}
-						size='icon'
-						variant='ghost'
-						className={cn(activeTool === "stroke-width" && "bg-muted")}
-					>
-						<TbStrokeStraight className='size-6' />
-					</Button>
-				</Hint>
-			</div>
+            {!isText && (
+                <>
+                    <div className='flex items-center h-full justify-center'>
+                        <Hint label='Stroke Color' side='bottom' sideOffset={5}>
+                            <Button
+                                onClick={() => onChangeActiveTool("stroke-color")}
+                                size='icon'
+                                variant='ghost'
+                                className={cn(activeTool === "stroke-color" && "bg-muted")}
+                            >
+                                <div
+                                    className='rounded-sm size-5 border-3 bg-white'
+                                    style={{
+                                        borderColor:
+                                            typeof strokeColor === "string" ? strokeColor : "#000000",
+                                    }}
+                                />
+                            </Button>
+                        </Hint>
+                    </div>
+                    <div className='flex items-center h-full justify-center'>
+                        <Hint label='Stroke Width' side='bottom' sideOffset={5}>
+                            <Button
+                                onClick={() => onChangeActiveTool("stroke-width")}
+                                size='icon'
+                                variant='ghost'
+                                className={cn(activeTool === "stroke-width" && "bg-muted")}
+                            >
+                                <TbStrokeStraight className='size-6' />
+                            </Button>
+                        </Hint>
+                    </div>
+                </>
+            )}
 			<div className='flex items-center h-full justify-center'>
 				<Hint label='Bring Forward' side='bottom' sideOffset={5}>
 					<Button
