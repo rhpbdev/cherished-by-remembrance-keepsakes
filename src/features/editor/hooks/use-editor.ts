@@ -177,10 +177,11 @@ const buildEditor = ({
 		},
 
 		// --- Text creation ---
-		addText: () => {
-			const object = new Textbox("Textbox", {
+		addText: (value, options) => {
+			const object = new Textbox(value, {
 				...TEXT_OPTIONS,
 				fill: fillColor,
+                ...options
 			});
 
 			addToCanvas(object);
@@ -231,7 +232,7 @@ const buildEditor = ({
 			// For now, we will just return the default fill color as a string.
 			return value as string;
 		},
-		changeFillColor: (value: string) => {
+		changeFillColor: (value) => {
 			setFillColor(value);
 			canvas.getActiveObjects().forEach((object) => {
 				object.set({ fill: value });
@@ -252,7 +253,7 @@ const buildEditor = ({
 
 			return value as string;
 		},
-		changeStrokeColor: (value: string) => {
+		changeStrokeColor: (value) => {
 			setStrokeColor(value);
 			canvas.getActiveObjects().forEach((object) => {
 				if (isTextType(object.type)) {
@@ -276,7 +277,7 @@ const buildEditor = ({
 
 			return value;
 		},
-		changeStrokeWidth: (value: number) => {
+		changeStrokeWidth: (value) => {
 			setStrokeWidth(value);
 			canvas.getActiveObjects().forEach((object) => {
 				object.set({ strokeWidth: value });
@@ -294,9 +295,9 @@ const buildEditor = ({
 
 			const value = selectedObject.strokeDashArray || strokeDashArray;
 
-			return value as number[];
+			return value;
 		},
-		changeStrokeDashArray: (value: number[]) => {
+		changeStrokeDashArray: (value) => {
 			setStrokeDashArray(value);
 			canvas.getActiveObjects().forEach((object) => {
 				object.set({ strokeDashArray: value });
@@ -316,7 +317,7 @@ const buildEditor = ({
 
 			return value;
 		},
-		changeOpacity: (value: number) => {
+		changeOpacity: (value) => {
 			canvas.getActiveObjects().forEach((object) => {
 				object.set({ opacity: value });
 			});
