@@ -101,7 +101,7 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
               variant='ghost'
               size='icon'
               onClick={() => onChangeActiveTool("select")}
-              className={cn(activeTool === "select" && "bg-primary hover:bg-primary/50")}
+              className={cn("hover:bg-primary/30", activeTool === "select" && "bg-purple-500 text-white hover:bg-purple-600 hover:text-white")}
             >
               <MousePointerClickIcon className='size-4' />
             </Button>
@@ -111,7 +111,7 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
               variant='ghost'
               size='icon'
               onClick={() => {}} // TODO: Add functionality for this button
-              className='hover:bg-primary/50' // TODO: Add dynamic classes for active state, etc.
+              className='hover:bg-primary/30' // TODO: Add dynamic classes for active state, etc.
             >
               <Undo2Icon className='size-4' />
             </Button>
@@ -121,7 +121,7 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
               variant='ghost'
               size='icon'
               onClick={() => {}} // TODO: Add functionality for this button
-              className='hover:bg-primary/50' // TODO: Add dynamic classes for active state, etc.
+              className='hover:bg-primary/30' // TODO: Add dynamic classes for active state, etc.
             >
               <Redo2Icon className='size-4' />
             </Button>
