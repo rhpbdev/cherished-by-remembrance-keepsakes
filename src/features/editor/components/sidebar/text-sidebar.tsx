@@ -28,8 +28,23 @@ export const TextSidebar = ({
     >
       <ScrollArea>
         <div className='p-4 space-y-6 border-b'>
-          <Button className='w-full' onClick={() => editor?.addText()}>
-            Add Text
+          <Button className='w-full h-16' variant='outline' size='lg' onClick={() => editor?.addText("Heading", {
+            fontSize: 80,
+            fontWeight: 700
+          })}>
+            <span className='text-3xl font-bold'>Add a Heading</span>
+          </Button>
+          <Button className='w-full h-16' variant='outline' size='lg' onClick={() => editor?.addText("Subheading", {
+            fontSize: 60,
+            fontWeight: 600
+          })}>
+            <span className='text-lg font-semibold'>Add a Subheading</span>
+          </Button>
+          <Button className='w-full h-16' variant='outline' size='lg' onClick={() => editor?.addText("Body Text", {
+            fontSize: 32,
+            fontWeight: 400
+          })}>
+            Add Body Text
           </Button>
         </div>
       </ScrollArea>
