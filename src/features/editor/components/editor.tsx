@@ -15,10 +15,11 @@ import { useEditor } from "@/features/editor/hooks/use-editor";
 import { Toolbar } from "@/features/editor/components/toolbar/toolbar";
 import { ShapeSidebar } from "@/features/editor/components/sidebar/shape-sidebar";
 import { FillColorSidebar } from "@/features/editor/components/sidebar/fill-color-sidebar";
-import { StrokeColorSidebar } from "./sidebar/stroke-color-sidebar";
-import { StrokeWidthSidebar } from "./sidebar/stroke-width-sidebar";
-import { OpacitySidebar } from './sidebar/opacity-sidebar';
-import { TextSidebar } from './sidebar/text-sidebar';
+import { StrokeColorSidebar } from "@/features/editor/components/sidebar/stroke-color-sidebar";
+import { StrokeWidthSidebar } from "@/features/editor/components/sidebar/stroke-width-sidebar";
+import { OpacitySidebar } from "@/features/editor/components/sidebar/opacity-sidebar";
+import { TextSidebar } from "@/features/editor/components/sidebar/text-sidebar";
+import { FontTool } from "@/features/editor/components/toolbar/font-tool";
 export const Editor = () => {
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 

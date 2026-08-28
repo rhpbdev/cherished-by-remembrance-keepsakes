@@ -106,12 +106,14 @@ export interface EditorHookProps {
 export type BuildEditorProps = {
 	canvas: Canvas;
 	fillColor: string;
+    fontFamily: string;
 	strokeColor: string;
 	strokeWidth: number;
 	strokeDashArray: number[];
 	selectedObjects: FabricObject[];
 	autoZoom: () => void;
 	setFillColor: (value: string) => void;
+    setFontFamily: (value: string) => void;
 	setStrokeColor: (value: string) => void;
 	setStrokeWidth: (value: number) => void;
 	setStrokeDashArray: (value: number[]) => void;
@@ -158,6 +160,12 @@ export interface Editor {
 	// --- Appearance: opacity ---
 	getActiveOpacity: () => number;
 	changeOpacity: (value: number) => void;
+
+    // --- Appearance: text ---
+    getActiveFontFamily: () => string;
+    changeFontFamily: (value: string) => void;
+    getActiveFontWeight: () => number;
+    changeFontWeight: (value: number) => void;
 
 	// --- State passthrough ---
 	canvas: Canvas;
