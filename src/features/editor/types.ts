@@ -166,6 +166,12 @@ export interface Editor {
     changeFontFamily: (value: string) => void;
     getActiveFontWeight: () => number;
     changeFontWeight: (value: number) => void;
+    getActiveFontStyle: () => string;
+    changeFontStyle: (value: string) => void;
+    getActiveFontLinethrough: () => boolean;
+    changeFontLinethrough: (value: boolean) => void;
+	getActiveFontUnderline: () => boolean;
+	changeFontUnderline: (value: boolean) => void;
 
 	// --- State passthrough ---
 	canvas: Canvas;

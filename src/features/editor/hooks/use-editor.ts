@@ -282,6 +282,57 @@ const buildEditor = ({
             });
             canvas.requestRenderAll();
 		},
+		getActiveFontStyle: () => {
+            const selectedObject = selectedObjects[0] as FabricText;
+
+            if (!selectedObject) return "normal";
+
+            const value = selectedObject.fontStyle || "normal";
+
+            return value;
+        },
+        changeFontStyle: (value) => {
+			canvas.getActiveObjects().forEach((object) => {
+                if (isTextType(object.type)) {
+                    object.set({ fontStyle: value });
+                }
+            });
+            canvas.requestRenderAll();
+		},
+		getActiveFontLinethrough: () => {
+            const selectedObject = selectedObjects[0] as FabricText;
+
+            if (!selectedObject) return false;
+
+            const value = selectedObject.linethrough || false;
+
+            return value;
+		},
+        changeFontLinethrough: (value) => {
+			canvas.getActiveObjects().forEach((object) => {
+                if (isTextType(object.type)) {
+                    object.set({ linethrough: value });
+                }
+            });
+            canvas.requestRenderAll();
+		},
+		getActiveFontUnderline: () => {
+            const selectedObject = selectedObjects[0] as FabricText;
+
+            if (!selectedObject) return false;
+
+            const value = selectedObject.underline || false;
+
+            return value;
+		},
+        changeFontUnderline: (value) => {
+			canvas.getActiveObjects().forEach((object) => {
+                if (isTextType(object.type)) {
+                    object.set({ underline: value });
+                }
+            });
+            canvas.requestRenderAll();
+		},
 
 		// --- Appearance: stroke color ---
 		getActiveStrokeColor: () => {

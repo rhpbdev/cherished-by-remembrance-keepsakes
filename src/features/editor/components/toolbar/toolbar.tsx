@@ -5,13 +5,14 @@ import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import {
 	FILL_COLOR,
+	STROKE_COLOR,
 	type ActiveTool,
 	type Editor,
 } from "@/features/editor/types";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
 import { RxTransparencyGrid } from "react-icons/rx";
-import { FaBold } from "react-icons/fa";
+import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { isTextType } from "@/features/editor/utils";
 import {
 	Select,
@@ -39,21 +40,26 @@ export const Toolbar = ({
 	const initialStrokeColor = editor?.getActiveStrokeColor();
     const initialFontFamily = editor?.getActiveFontFamily();
     const initialFontWeight = editor?.getActiveFontWeight() || FONT_WEIGHT;
+	const initialFontStyle = editor?.getActiveFontStyle();
+	const initialFontLinethrough = editor?.getActiveFontLinethrough();
+	const initialFontUnderline = editor?.getActiveFontUnderline();
 
     const [properties, setProperties] = useState({
         fillColor: initialFillColor,
         strokeColor: initialStrokeColor,
-        fontWeight: initialFontWeight,
         fontFamily: initialFontFamily,
+        fontWeight: initialFontWeight,
+		fontStyle: initialFontStyle,
+		fontLinethrough: initialFontLinethrough,
+		fontUnderline: initialFontUnderline,
     });
 
+	const selectedObject = editor?.selectedObjects[0];
 	const selectedObjectType = editor?.selectedObjects[0]?.type;
 
 	const isText = isTextType(selectedObjectType);
 
     const toggleBold = () => {
-        const selectedObject = editor?.selectedObjects[0];
-
         if (!selectedObject) return;
 
         const newValue = properties.fontWeight > 500 ? 500 : 700;
@@ -65,6 +71,42 @@ export const Toolbar = ({
         }));
     };
 
+	const toggleItalic = () => {
+		if (!selectedObject) return;
+
+		const isTalic = properties.fontStyle === "italic";
+		const newValue = isTalic ? "normal" : "italic";
+
+		editor?.changeFontStyle(newValue);
+		setProperties((current) => ({
+			...current,
+			fontStyle: newValue
+		}));
+	};
+
+	const toggleLinethrough = () => {
+		if (!selectedObject) return;
+
+		const newValue = properties.fontLinethrough ? false : true;
+
+		editor?.changeFontLinethrough(newValue);
+		setProperties((current) => ({
+			...current,
+			fontLinethrough: newValue
+		}));
+	};
+
+	const toggleUnderline = () => {
+		if (!selectedObject) return;
+
+		const newValue = properties.fontUnderline ? false : true;
+
+		editor?.changeFontUnderline(newValue);
+		setProperties((current) => ({
+			...current,
+			fontUnderline: newValue
+		}));
+	};
 
     const onChangeFont = (fontValue: string) => {
         editor?.changeFontFamily(fontValue);
@@ -76,28 +118,15 @@ export const Toolbar = ({
 		);
 	}
 
-
 	return (
 		<div className='shrink-0 h-14 border-b bg-white w-full flex items-center overflow-x-auto z-49 p-2 gap-x-2'>
 			{isText && (
 				<div className='flex items-center h-full justify-center'>
-					{/* <Button
-                                onClick={() => onChangeActiveTool("font")}
-                                size='icon'
-                                variant='outline'
-                                className={cn(
-                                    "w-auto px-2 text-xs",
-                                    activeTool === "font" && "bg-muted",
-                                    )}
-                                    >
-                                    <div className='max-w-[100px] truncate'>Arial</div>
-                                    <ChevronDownIcon className='size-4 ml-2 shrink-0' />
-                                    </Button> */}
 					{fonts && (
 						<Select onValueChange={(fontValue) => onChangeFont(fontValue)}>
 							<SelectTrigger className='w-32 truncate'>
 								<SelectValue
-									placeholder={initialFontFamily ?? "Select a font"}
+									placeholder={properties.fontFamily ?? "Select a font"}
 								/>
 							</SelectTrigger>
 							<SelectContent>
@@ -120,9 +149,51 @@ export const Toolbar = ({
 							onClick={toggleBold}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.fontWeight > 500 && "bg-muted")}
+                            className={cn(properties.fontWeight > 500 && "bg-primary/70")}
 						>
 							<FaBold className='size-5' />
+						</Button>
+					</Hint>
+				</div>
+			)}
+			{isText && (
+				<div className='flex items-center h-full justify-center'>
+					<Hint label='Italic' side='bottom' sideOffset={5}>
+						<Button
+							onClick={toggleItalic}
+							size='icon'
+							variant='ghost'
+                            className={cn(properties.fontStyle === "italic" && "bg-primary/70")}
+						>
+							<FaItalic className='size-5' />
+						</Button>
+					</Hint>
+				</div>
+			)}
+			{isText && (
+				<div className='flex items-center h-full justify-center'>
+					<Hint label='Linethrough' side='bottom' sideOffset={5}>
+						<Button
+							onClick={toggleLinethrough}
+							size='icon'
+							variant='ghost'
+                            className={cn(properties.fontLinethrough && "bg-primary/70")}
+						>
+							<FaStrikethrough className='size-5' />
+						</Button>
+					</Hint>
+				</div>
+			)}
+			{isText && (
+				<div className='flex items-center h-full justify-center'>
+					<Hint label='Underline' side='bottom' sideOffset={5}>
+						<Button
+							onClick={toggleUnderline}
+							size='icon'
+							variant='ghost'
+                            className={cn(properties.fontUnderline && "bg-primary/70")}
+						>
+							<FaUnderline className='size-5' />
 						</Button>
 					</Hint>
 				</div>
@@ -133,13 +204,13 @@ export const Toolbar = ({
 						onClick={() => onChangeActiveTool("fill")}
 						size='icon'
 						variant='ghost'
-						className={cn(activeTool === "fill" && "bg-muted")}
+						className={cn(activeTool === "fill" && "bg-primary/70")}
 					>
 						<div
 							className='rounded-sm size-5 border'
 							style={{
 								backgroundColor:
-									typeof properties.fillColor === "string" ? properties.fillColor : "#000000",
+									typeof properties.fillColor === "string" ? properties.fillColor : FILL_COLOR,
 							}}
 						/>
 					</Button>
@@ -153,13 +224,13 @@ export const Toolbar = ({
 								onClick={() => onChangeActiveTool("stroke-color")}
 								size='icon'
 								variant='ghost'
-								className={cn(activeTool === "stroke-color" && "bg-muted")}
+								className={cn(activeTool === "stroke-color" && "bg-primary/70")}
 							>
 								<div
 									className='rounded-sm size-5 border-3 bg-white'
 									style={{
 										borderColor:
-											typeof properties.strokeColor === "string" ? properties.strokeColor : "#000000",
+											typeof properties.strokeColor === "string" ? properties.strokeColor : STROKE_COLOR,
 									}}
 								/>
 							</Button>
@@ -171,7 +242,7 @@ export const Toolbar = ({
 								onClick={() => onChangeActiveTool("stroke-width")}
 								size='icon'
 								variant='ghost'
-								className={cn(activeTool === "stroke-width" && "bg-muted")}
+								className={cn(activeTool === "stroke-width" && "bg-primary/70")}
 							>
 								<TbStrokeStraight className='size-6' />
 							</Button>
@@ -185,6 +256,7 @@ export const Toolbar = ({
 						onClick={() => editor?.bringForward()}
 						size='icon'
 						variant='ghost'
+						className="active:bg-primary/70"
 					>
 						<ArrowUpIcon className='size-5' />
 					</Button>
@@ -196,6 +268,7 @@ export const Toolbar = ({
 						onClick={() => editor?.sendBackward()}
 						size='icon'
 						variant='ghost'
+						className="active:bg-primary/70"
 					>
 						<ArrowDownIcon className='size-5' />
 					</Button>
@@ -207,6 +280,7 @@ export const Toolbar = ({
 						onClick={() => editor?.centerFabricObject()}
 						size='icon'
 						variant='ghost'
+						className="active:bg-primary/70"
 					>
 						<TbFocusCentered className='size-5' />
 					</Button>
@@ -218,9 +292,9 @@ export const Toolbar = ({
 						onClick={() => onChangeActiveTool("opacity")}
 						size='icon'
 						variant='ghost'
-						className={cn(activeTool === "opacity" && "bg-muted")}
+						className={cn(activeTool === "opacity" && "bg-primary/70")}
 					>
-						<RxTransparencyGrid className='size-5' />
+						<RxTransparencyGrid className='size-5 bg-white border border-white' />
 					</Button>
 				</Hint>
 			</div>
