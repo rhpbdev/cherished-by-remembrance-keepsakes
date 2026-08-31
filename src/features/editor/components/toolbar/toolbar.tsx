@@ -5,6 +5,7 @@ import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import {
 	FILL_COLOR,
+	FONT_SIZE,
 	STROKE_COLOR,
 	type ActiveTool,
 	type Editor,
@@ -19,11 +20,11 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
 import { FONT_WEIGHT, fonts } from "@/features/editor/constants";
+import { FontSizeInput } from './font-size-input';
 
 interface ToolbarProps {
 	editor: Editor | undefined;
@@ -44,6 +45,7 @@ export const Toolbar = ({
 	const initialFontLinethrough = editor?.getActiveFontLinethrough();
 	const initialFontUnderline = editor?.getActiveFontUnderline();
     const initialTextAlign = editor?.getActiveTextAlign();
+    const initialFontSize = editor?.getActiveFontSize() || FONT_SIZE; 
 
     const [properties, setProperties] = useState({
         fillColor: initialFillColor,
@@ -53,13 +55,26 @@ export const Toolbar = ({
 		fontStyle: initialFontStyle,
 		fontLinethrough: initialFontLinethrough,
 		fontUnderline: initialFontUnderline,
-        textAlign: initialTextAlign
+        textAlign: initialTextAlign,
+        fontSize: initialFontSize
     });
 
 	const selectedObject = editor?.selectedObjects[0];
 	const selectedObjectType = editor?.selectedObjects[0]?.type;
 
 	const isText = isTextType(selectedObjectType);
+
+    const onChangeFontSize = (value: number) => {
+        if (!selectedObject) {
+        return;
+        }
+
+        editor?.changeFontSize(value);
+        setProperties((current) => ({
+        ...current,
+        fontSize: value,
+        }));
+    };
 
     const onChangeTextAlign = (value: string) => {
         if (!selectedObject) return;
@@ -154,6 +169,14 @@ export const Toolbar = ({
 					)}
 				</div>
 			)}
+            {isText && (
+                <div className='flex items-center h-full justify-center'>
+                    <FontSizeInput
+                        value={properties.fontSize}
+                        onChange={onChangeFontSize}
+                    />
+                </div>
+            )}
 			{isText && (
 				<div className='flex items-center h-full justify-center'>
 					<Hint label='Bold' side='bottom' sideOffset={5}>

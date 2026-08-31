@@ -26,6 +26,7 @@ import {
 	type BuildEditorProps,
 	type Editor,
     FONT_FAMILY,
+    FONT_SIZE,
 } from "@/features/editor/types";
 import { isTextType } from "@/features/editor/utils";
 import { useAutoResize } from "@/features/editor/hooks/use-auto-resize";
@@ -346,6 +347,23 @@ const buildEditor = ({
             canvas.getActiveObjects().forEach((object) => {
                 if (isTextType(object.type)) {
                     object.set({ textAlign: value });
+                }
+            });
+            canvas.requestRenderAll();
+        },
+        getActiveFontSize: () => {
+            const selectedObject = selectedObjects[0] as FabricText;
+
+            if (!selectedObject) return FONT_SIZE;
+
+            const value = selectedObject.fontSize || FONT_SIZE;
+
+            return value;
+        },
+        changeFontSize: (value) => {
+            canvas.getActiveObjects().forEach((object) => {
+                if (isTextType(object.type)) {
+                    object.set({ fontSize: value });
                 }
             });
             canvas.requestRenderAll();

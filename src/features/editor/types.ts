@@ -170,6 +170,8 @@ export interface Editor {
 	changeFontUnderline: (value: boolean) => void;
     getActiveTextAlign: () => string;
     changeTextAlign: (value: string) => void;
+    getActiveFontSize: () => number;
+    changeFontSize: (value: number) => void;
 
 	// --- State passthrough ---
 	canvas: Canvas;
