@@ -12,7 +12,7 @@ import {
 } from "@/features/editor/types";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
-import { RxTransparencyGrid } from "react-icons/rx";
+import { RxTransparencyGrid, RxTrash } from "react-icons/rx";
 import { FaAlignLeft, FaAlignCenter, FaAlignRight, FaAlignJustify, FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { isTextType } from "@/features/editor/utils";
 import {
@@ -386,6 +386,18 @@ export const Toolbar = ({
 						className={cn(activeTool === "opacity" && "bg-primary/70")}
 					>
 						<RxTransparencyGrid className='size-5 bg-white border border-white' />
+					</Button>
+				</Hint>
+			</div>
+			<div className='flex items-center h-full justify-center'>
+				<Hint label='Delete' side='bottom' sideOffset={5}>
+					<Button
+						onClick={() => editor?.delete()}
+						size='icon'
+						variant='ghost'
+                        className="active:bg-primary/70"
+					>
+						<RxTrash className='size-5 text-destructive' />
 					</Button>
 				</Hint>
 			</div>

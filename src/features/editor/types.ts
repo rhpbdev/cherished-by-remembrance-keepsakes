@@ -120,6 +120,8 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+	delete: () => void;
+    
 	// --- Viewport ---
 	autoZoom: () => void;
 	zoomIn: () => void;
