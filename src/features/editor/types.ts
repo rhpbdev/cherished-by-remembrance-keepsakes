@@ -145,15 +145,11 @@ export interface Editor {
 	getActiveFillColor: () => string;
 	changeFillColor: (value: string) => void;
 
-	// --- Appearance: stroke color ---
+	// --- Appearance: stroke ---
 	getActiveStrokeColor: () => string;
 	changeStrokeColor: (value: string) => void;
-
-	// --- Appearance: stroke width ---
 	getActiveStrokeWidth: () => number;
 	changeStrokeWidth: (value: number) => void;
-
-	// --- Appearance: stroke dash array ---
 	getActiveStrokeDashArray: () => number[];
 	changeStrokeDashArray: (value: number[]) => void;
 
@@ -172,6 +168,8 @@ export interface Editor {
     changeFontLinethrough: (value: boolean) => void;
 	getActiveFontUnderline: () => boolean;
 	changeFontUnderline: (value: boolean) => void;
+    getActiveTextAlign: () => string;
+    changeTextAlign: (value: string) => void;
 
 	// --- State passthrough ---
 	canvas: Canvas;

@@ -246,7 +246,7 @@ const buildEditor = ({
 			canvas.requestRenderAll();
 		},
 
-        // --- Appearance: font ---
+        // --- Appearance: text ---
         getActiveFontFamily: () => {
             const selectedObject = selectedObjects[0] as FabricText;
 
@@ -333,6 +333,23 @@ const buildEditor = ({
             });
             canvas.requestRenderAll();
 		},
+        getActiveTextAlign: () => {
+            const selectedObject = selectedObjects[0] as FabricText;
+
+            if (!selectedObject) return "left";
+
+            const value = selectedObject.textAlign || "left";
+
+            return value;
+        },
+        changeTextAlign: (value) => {
+            canvas.getActiveObjects().forEach((object) => {
+                if (isTextType(object.type)) {
+                    object.set({ textAlign: value });
+                }
+            });
+            canvas.requestRenderAll();
+        },
 
 		// --- Appearance: stroke color ---
 		getActiveStrokeColor: () => {
