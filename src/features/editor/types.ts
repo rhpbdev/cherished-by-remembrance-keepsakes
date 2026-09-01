@@ -97,7 +97,7 @@ export const TEXT_OPTIONS = {
 	fontSize: FONT_SIZE,
 	fontFamily: FONT_FAMILY,
 	width: 200,
-	height: 500
+	height: 500,
 };
 export interface EditorHookProps {
 	clearSelectionCallback?: () => void;
@@ -106,22 +106,23 @@ export interface EditorHookProps {
 export type BuildEditorProps = {
 	canvas: Canvas;
 	fillColor: string;
-    fontFamily: string;
+	fontFamily: string;
 	strokeColor: string;
 	strokeWidth: number;
 	strokeDashArray: number[];
 	selectedObjects: FabricObject[];
 	autoZoom: () => void;
 	setFillColor: (value: string) => void;
-    setFontFamily: (value: string) => void;
+	setFontFamily: (value: string) => void;
 	setStrokeColor: (value: string) => void;
 	setStrokeWidth: (value: number) => void;
 	setStrokeDashArray: (value: number[]) => void;
 };
 
 export interface Editor {
+	addImage: (value: string) => Promise<void>;
 	delete: () => void;
-    
+
 	// --- Viewport ---
 	autoZoom: () => void;
 	zoomIn: () => void;
@@ -159,21 +160,21 @@ export interface Editor {
 	getActiveOpacity: () => number;
 	changeOpacity: (value: number) => void;
 
-    // --- Appearance: text ---
-    getActiveFontFamily: () => string;
-    changeFontFamily: (value: string) => void;
-    getActiveFontWeight: () => number;
-    changeFontWeight: (value: number) => void;
-    getActiveFontStyle: () => string;
-    changeFontStyle: (value: string) => void;
-    getActiveFontLinethrough: () => boolean;
-    changeFontLinethrough: (value: boolean) => void;
+	// --- Appearance: text ---
+	getActiveFontFamily: () => string;
+	changeFontFamily: (value: string) => void;
+	getActiveFontWeight: () => number;
+	changeFontWeight: (value: number) => void;
+	getActiveFontStyle: () => string;
+	changeFontStyle: (value: string) => void;
+	getActiveFontLinethrough: () => boolean;
+	changeFontLinethrough: (value: boolean) => void;
 	getActiveFontUnderline: () => boolean;
 	changeFontUnderline: (value: boolean) => void;
-    getActiveTextAlign: () => string;
-    changeTextAlign: (value: string) => void;
-    getActiveFontSize: () => number;
-    changeFontSize: (value: number) => void;
+	getActiveTextAlign: () => string;
+	changeTextAlign: (value: string) => void;
+	getActiveFontSize: () => number;
+	changeFontSize: (value: number) => void;
 
 	// --- State passthrough ---
 	canvas: Canvas;
