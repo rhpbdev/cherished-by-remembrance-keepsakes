@@ -13,7 +13,16 @@ import {
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
 import { RxTransparencyGrid, RxTrash } from "react-icons/rx";
-import { FaAlignLeft, FaAlignCenter, FaAlignRight, FaAlignJustify, FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
+import {
+	FaAlignLeft,
+	FaAlignCenter,
+	FaAlignRight,
+	FaAlignJustify,
+	FaBold,
+	FaItalic,
+	FaStrikethrough,
+	FaUnderline,
+} from "react-icons/fa";
 import { isTextType } from "@/features/editor/utils";
 import {
 	Select,
@@ -24,7 +33,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { FONT_WEIGHT, fonts } from "@/features/editor/constants";
-import { FontSizeInput } from './font-size-input';
+import { FontSizeInput } from "./font-size-input";
 
 interface ToolbarProps {
 	editor: Editor | undefined;
@@ -39,64 +48,64 @@ export const Toolbar = ({
 }: ToolbarProps) => {
 	const initialFillColor = editor?.getActiveFillColor();
 	const initialStrokeColor = editor?.getActiveStrokeColor();
-    const initialFontFamily = editor?.getActiveFontFamily();
-    const initialFontWeight = editor?.getActiveFontWeight() || FONT_WEIGHT;
+	const initialFontFamily = editor?.getActiveFontFamily();
+	const initialFontWeight = editor?.getActiveFontWeight() || FONT_WEIGHT;
 	const initialFontStyle = editor?.getActiveFontStyle();
 	const initialFontLinethrough = editor?.getActiveFontLinethrough();
 	const initialFontUnderline = editor?.getActiveFontUnderline();
-    const initialTextAlign = editor?.getActiveTextAlign();
-    const initialFontSize = editor?.getActiveFontSize() || FONT_SIZE; 
+	const initialTextAlign = editor?.getActiveTextAlign();
+	const initialFontSize = editor?.getActiveFontSize() || FONT_SIZE;
 
-    const [properties, setProperties] = useState({
-        fillColor: initialFillColor,
-        strokeColor: initialStrokeColor,
-        fontFamily: initialFontFamily,
-        fontWeight: initialFontWeight,
+	const [properties, setProperties] = useState({
+		fillColor: initialFillColor,
+		strokeColor: initialStrokeColor,
+		fontFamily: initialFontFamily,
+		fontWeight: initialFontWeight,
 		fontStyle: initialFontStyle,
 		fontLinethrough: initialFontLinethrough,
 		fontUnderline: initialFontUnderline,
-        textAlign: initialTextAlign,
-        fontSize: initialFontSize
-    });
+		textAlign: initialTextAlign,
+		fontSize: initialFontSize,
+	});
 
 	const selectedObject = editor?.selectedObjects[0];
 	const selectedObjectType = editor?.selectedObjects[0]?.type;
 
 	const isText = isTextType(selectedObjectType);
 
-    const onChangeFontSize = (value: number) => {
-        if (!selectedObject) {
-        return;
-        }
+	const onChangeFontSize = (value: number) => {
+		if (!selectedObject) {
+			return;
+		}
 
-        editor?.changeFontSize(value);
-        setProperties((current) => ({
-        ...current,
-        fontSize: value,
-        }));
-    };
+		editor?.changeFontSize(value);
+		setProperties((current) => ({
+			...current,
+			fontSize: value,
+		}));
+	};
 
-    const onChangeTextAlign = (value: string) => {
-        if (!selectedObject) return;
+	const onChangeTextAlign = (value: string) => {
+		if (!selectedObject) return;
 
-        editor?.changeTextAlign(value);
-        setProperties((current) => ({
-            ...current,
-            textAlign: value,
-        }));
-    };
+		editor?.changeTextAlign(value);
+		setProperties((current) => ({
+			...current,
+			textAlign: value,
+		}));
+	};
 
-    const toggleBold = () => {
-        if (!selectedObject) return;
+	const toggleBold = () => {
+		if (!selectedObject) return;
 
-        const newValue = properties.fontWeight > 500 ? 500 : 700;
+		const newValue = properties.fontWeight > 500 ? 500 : 700;
 
-        editor?.changeFontWeight(newValue);
-        setProperties((current) => ({
-            ...current,
-            fontWeight: newValue,
-        }));
-    };
+		editor?.changeFontWeight(newValue);
+		setProperties((current) => ({
+			...current,
+			fontWeight: newValue,
+		}));
+	};
 
 	const toggleItalic = () => {
 		if (!selectedObject) return;
@@ -107,7 +116,7 @@ export const Toolbar = ({
 		editor?.changeFontStyle(newValue);
 		setProperties((current) => ({
 			...current,
-			fontStyle: newValue
+			fontStyle: newValue,
 		}));
 	};
 
@@ -119,7 +128,7 @@ export const Toolbar = ({
 		editor?.changeFontLinethrough(newValue);
 		setProperties((current) => ({
 			...current,
-			fontLinethrough: newValue
+			fontLinethrough: newValue,
 		}));
 	};
 
@@ -131,13 +140,13 @@ export const Toolbar = ({
 		editor?.changeFontUnderline(newValue);
 		setProperties((current) => ({
 			...current,
-			fontUnderline: newValue
+			fontUnderline: newValue,
 		}));
 	};
 
-    const onChangeFont = (fontValue: string) => {
-        editor?.changeFontFamily(fontValue);
-    };
+	const onChangeFont = (fontValue: string) => {
+		editor?.changeFontFamily(fontValue);
+	};
 
 	if (editor?.selectedObjects.length === 0) {
 		return (
@@ -169,14 +178,14 @@ export const Toolbar = ({
 					)}
 				</div>
 			)}
-            {isText && (
-                <div className='flex items-center h-full justify-center'>
-                    <FontSizeInput
-                        value={properties.fontSize}
-                        onChange={onChangeFontSize}
-                    />
-                </div>
-            )}
+			{isText && (
+				<div className='flex items-center h-full justify-center'>
+					<FontSizeInput
+						value={properties.fontSize}
+						onChange={onChangeFontSize}
+					/>
+				</div>
+			)}
 			{isText && (
 				<div className='flex items-center h-full justify-center'>
 					<Hint label='Bold' side='bottom' sideOffset={5}>
@@ -184,7 +193,7 @@ export const Toolbar = ({
 							onClick={toggleBold}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.fontWeight > 500 && "bg-primary/70")}
+							className={cn(properties.fontWeight > 500 && "bg-primary/70")}
 						>
 							<FaBold className='size-4' />
 						</Button>
@@ -198,7 +207,9 @@ export const Toolbar = ({
 							onClick={toggleItalic}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.fontStyle === "italic" && "bg-primary/70")}
+							className={cn(
+								properties.fontStyle === "italic" && "bg-primary/70",
+							)}
 						>
 							<FaItalic className='size-4' />
 						</Button>
@@ -212,7 +223,7 @@ export const Toolbar = ({
 							onClick={toggleLinethrough}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.fontLinethrough && "bg-primary/70")}
+							className={cn(properties.fontLinethrough && "bg-primary/70")}
 						>
 							<FaStrikethrough className='size-4' />
 						</Button>
@@ -226,7 +237,7 @@ export const Toolbar = ({
 							onClick={toggleUnderline}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.fontUnderline && "bg-primary/70")}
+							className={cn(properties.fontUnderline && "bg-primary/70")}
 						>
 							<FaUnderline className='size-4' />
 						</Button>
@@ -240,7 +251,7 @@ export const Toolbar = ({
 							onClick={() => onChangeTextAlign("left")}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.textAlign === "left" && "bg-primary/70")}
+							className={cn(properties.textAlign === "left" && "bg-primary/70")}
 						>
 							<FaAlignLeft className='size-4' />
 						</Button>
@@ -254,7 +265,9 @@ export const Toolbar = ({
 							onClick={() => onChangeTextAlign("center")}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.textAlign === "center" && "bg-primary/70")}
+							className={cn(
+								properties.textAlign === "center" && "bg-primary/70",
+							)}
 						>
 							<FaAlignCenter className='size-4' />
 						</Button>
@@ -268,7 +281,9 @@ export const Toolbar = ({
 							onClick={() => onChangeTextAlign("right")}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.textAlign === "right" && "bg-primary/70")}
+							className={cn(
+								properties.textAlign === "right" && "bg-primary/70",
+							)}
 						>
 							<FaAlignRight className='size-4' />
 						</Button>
@@ -282,7 +297,9 @@ export const Toolbar = ({
 							onClick={() => onChangeTextAlign("justify")}
 							size='icon'
 							variant='ghost'
-                            className={cn(properties.textAlign === "justify" && "bg-primary/70")}
+							className={cn(
+								properties.textAlign === "justify" && "bg-primary/70",
+							)}
 						>
 							<FaAlignJustify className='size-4' />
 						</Button>
@@ -301,7 +318,9 @@ export const Toolbar = ({
 							className='rounded-sm size-5 border'
 							style={{
 								backgroundColor:
-									typeof properties.fillColor === "string" ? properties.fillColor : FILL_COLOR,
+									typeof properties.fillColor === "string"
+										? properties.fillColor
+										: FILL_COLOR,
 							}}
 						/>
 					</Button>
@@ -321,7 +340,9 @@ export const Toolbar = ({
 									className='rounded-sm size-5 border-3 bg-white'
 									style={{
 										borderColor:
-											typeof properties.strokeColor === "string" ? properties.strokeColor : STROKE_COLOR,
+											typeof properties.strokeColor === "string"
+												? properties.strokeColor
+												: STROKE_COLOR,
 									}}
 								/>
 							</Button>
@@ -347,7 +368,7 @@ export const Toolbar = ({
 						onClick={() => editor?.bringForward()}
 						size='icon'
 						variant='ghost'
-						className="active:bg-primary/70"
+						className='active:bg-primary/70'
 					>
 						<ArrowUpIcon className='size-5' />
 					</Button>
@@ -359,7 +380,7 @@ export const Toolbar = ({
 						onClick={() => editor?.sendBackward()}
 						size='icon'
 						variant='ghost'
-						className="active:bg-primary/70"
+						className='active:bg-primary/70'
 					>
 						<ArrowDownIcon className='size-5' />
 					</Button>
@@ -371,7 +392,7 @@ export const Toolbar = ({
 						onClick={() => editor?.centerFabricObject()}
 						size='icon'
 						variant='ghost'
-						className="active:bg-primary/70"
+						className='active:bg-primary/70'
 					>
 						<TbFocusCentered className='size-5' />
 					</Button>
@@ -395,7 +416,7 @@ export const Toolbar = ({
 						onClick={() => editor?.delete()}
 						size='icon'
 						variant='ghost'
-                        className="active:bg-primary/70"
+						className='active:bg-primary/70'
 					>
 						<RxTrash className='size-5 text-destructive' />
 					</Button>
