@@ -104,6 +104,8 @@ export interface EditorHookProps {
 }
 
 export type BuildEditorProps = {
+	copy: () => Promise<void>;
+	paste: () => Promise<void>;
 	canvas: Canvas;
 	fillColor: string;
 	fontFamily: string;
@@ -120,7 +122,13 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+	// --- Clipboard ---
+	onDuplicate: () => Promise<void>;
+
+	// --- Image manipulation ---
 	addImage: (value: string) => Promise<void>;
+
+	// --- Deletion ---
 	delete: () => void;
 
 	// --- Viewport ---

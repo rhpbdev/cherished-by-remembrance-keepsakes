@@ -12,7 +12,12 @@ import {
 } from "@/features/editor/types";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
-import { RxTransparencyGrid, RxTrash } from "react-icons/rx";
+import {
+	RxClipboardCopy,
+	RxClipboard,
+	RxTransparencyGrid,
+	RxTrash,
+} from "react-icons/rx";
 import {
 	FaAlignLeft,
 	FaAlignCenter,
@@ -395,6 +400,20 @@ export const Toolbar = ({
 						className='active:bg-primary/70'
 					>
 						<TbFocusCentered className='size-5' />
+					</Button>
+				</Hint>
+			</div>
+			<div className='flex items-center h-full justify-center'>
+				<Hint label='Duplicate' side='bottom' sideOffset={5}>
+					<Button
+						onClick={() => {
+							editor?.onDuplicate();
+						}}
+						size='icon'
+						variant='ghost'
+						className='active:bg-primary/70'
+					>
+						<RxClipboardCopy className='size-4' />
 					</Button>
 				</Hint>
 			</div>

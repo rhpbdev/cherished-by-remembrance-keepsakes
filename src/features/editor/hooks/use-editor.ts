@@ -32,11 +32,14 @@ import {
 import { isTextType } from "@/features/editor/utils";
 import { useAutoResize } from "@/features/editor/hooks/use-auto-resize";
 import { useCanvasEvents } from "@/features/editor/hooks/use-canvas-events";
-import { useAligningGuidelines } from "./use-aligning-guidelines";
-import { FONT_WEIGHT } from "../constants";
+import { FONT_WEIGHT } from "@/features/editor/constants";
+import { useClipboard } from "@/features/editor/hooks/use-clipboard";
+import { useAligningGuidelines } from "@/features/editor/hooks/use-aligning-guidelines";
 
 // 1. Build the editor object that will contain all the methods for manipulating the canvas. This object will be created once and memoized, so it doesn't cause unnecessary re-renders. Takes inspiration from the Fabric.js canvas API (fabric-react package / react-canvas).
 const buildEditor = ({
+	copy,
+	paste,
 	canvas,
 	fillColor,
 	fontFamily,
@@ -75,6 +78,13 @@ const buildEditor = ({
 	};
 
 	return {
+		// --- Clipboard ---
+		onDuplicate: async () => {
+			await copy();
+			await paste();
+		},
+
+		// --- Image manipulation ---
 		addImage: async (value) => {
 			try {
 				const image = await FabricImage.fromURL(value, {
@@ -93,6 +103,8 @@ const buildEditor = ({
 				console.error("Failed to load image:", error);
 			}
 		},
+
+		// --- Deletion ---
 		delete: () => {
 			canvas.getActiveObjects().forEach((object) => {
 				canvas.remove(object);
@@ -509,6 +521,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 	const [strokeDashArray, setStrokeDashArray] =
 		useState<number[]>(STROKE_DASH_ARRAY);
 
+	const { copy, paste } = useClipboard({ canvas });
+
 	const { autoZoom } = useAutoResize({
 		canvas,
 		container,
@@ -529,6 +543,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 		if (!canvas) return undefined;
 
 		return buildEditor({
+			copy,
+			paste,
 			canvas,
 			fillColor,
 			fontFamily,
@@ -544,6 +560,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 			setStrokeDashArray,
 		});
 	}, [
+		copy,
+		paste,
 		canvas,
 		fillColor,
 		fontFamily,
@@ -604,17 +622,6 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 
 			setCanvas(initialCanvas);
 			setContainer(initialContainer);
-
-			// const rect = new Rect({
-			//   left: 100,
-			//   top: 100,
-			//   fill: FILL_COLOR,
-			//   width: 100,
-			//   height: 100,
-			// });
-
-			// initialCanvas.add(rect);
-			// initialCanvas.centerObject(rect);
 		},
 		[],
 	);
