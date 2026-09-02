@@ -12,12 +12,7 @@ import {
 } from "@/features/editor/types";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { TbFocusCentered, TbStrokeStraight } from "react-icons/tb";
-import {
-	RxClipboardCopy,
-	RxClipboard,
-	RxTransparencyGrid,
-	RxTrash,
-} from "react-icons/rx";
+import { RxClipboardCopy, RxTransparencyGrid, RxTrash } from "react-icons/rx";
 import {
 	FaAlignLeft,
 	FaAlignCenter,
