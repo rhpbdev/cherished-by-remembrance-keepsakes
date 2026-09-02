@@ -122,6 +122,8 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+	changeSize: (value: { width: number; height: number }) => void;
+	changeBackground: (value: string) => void;
 	// --- Clipboard ---
 	onDuplicate: () => Promise<void>;
 

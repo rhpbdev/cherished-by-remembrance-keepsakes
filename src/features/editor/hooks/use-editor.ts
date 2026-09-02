@@ -78,6 +78,24 @@ const buildEditor = ({
 	};
 
 	return {
+		changeSize: (value: { width: number; height: number }) => {
+			const workspace = getWorkspace();
+			if (!workspace) return;
+
+			workspace.set({ ...value });
+			canvas.requestRenderAll();
+			autoZoom();
+
+			// TODO: Save
+		},
+		changeBackground: (value) => {
+			const workspace = getWorkspace();
+			if (!workspace) return;
+
+			workspace.set({ fill: value });
+			canvas.requestRenderAll();
+		},
+
 		// --- Clipboard ---
 		onDuplicate: async () => {
 			await copy();
@@ -92,7 +110,6 @@ const buildEditor = ({
 				});
 
 				const workspace = getWorkspace();
-
 				if (!workspace) return;
 
 				image.scaleToWidth(workspace.width ?? image.width);
@@ -242,6 +259,7 @@ const buildEditor = ({
 
 			const workspace = getWorkspace();
 			if (workspace) canvas.sendObjectToBack(workspace);
+			// TODO: Consider using optional chaining for safety
 		},
 		sendBackward: () => {
 			canvas.getActiveObjects().forEach((object) => {
@@ -252,6 +270,7 @@ const buildEditor = ({
 
 			const workspace = getWorkspace();
 			if (workspace) canvas.sendObjectToBack(workspace);
+			// TODO: Consider using optional chaining for safety
 			// TODO: Fix workspace overflow
 		},
 		centerFabricObject: () => {
