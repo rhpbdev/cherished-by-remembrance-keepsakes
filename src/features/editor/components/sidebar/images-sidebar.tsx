@@ -45,7 +45,7 @@ export const ImageSidebar = ({
 					</p>
 				</div>
 			)}
-			<ScrollArea>
+			<ScrollArea className='overflow-auto'>
 				<div className='p-4'>
 					<div className='grid grid-cols-2 gap-2'>
 						{data &&
