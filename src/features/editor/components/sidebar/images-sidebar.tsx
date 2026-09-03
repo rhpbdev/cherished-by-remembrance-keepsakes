@@ -19,7 +19,7 @@ export const ImageSidebar = ({
 	activeTool,
 	onChangeActiveTool,
 }: ImageSidebarProps) => {
-	const { data, isLoading, isError } = useGetImages();
+	const isOpen = activeTool === "images";
 
 	const onClose = () => {
 		onChangeActiveTool("select");
@@ -27,11 +27,21 @@ export const ImageSidebar = ({
 
 	return (
 		<ToolSidebarWrapper
-			isOpen={activeTool === "images"}
+			isOpen={isOpen}
 			onClose={onClose}
 			title='Images'
 			description='Manage your image uploads.'
 		>
+			{isOpen && <ImagesArea editor={editor!} />}
+		</ToolSidebarWrapper>
+	);
+};
+
+const ImagesArea = ({ editor }: { editor: Editor }) => {
+	const { data, isLoading, isError } = useGetImages();
+
+	return (
+		<>
 			{isLoading && (
 				<div className='flex items-center justify-center flex-1'>
 					<LoaderIcon className='size-5 text-muted-foreground animate-spin' />
@@ -81,6 +91,6 @@ export const ImageSidebar = ({
 					</div>
 				</div>
 			</ScrollArea>
-		</ToolSidebarWrapper>
+		</>
 	);
 };
