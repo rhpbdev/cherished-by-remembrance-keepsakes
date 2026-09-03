@@ -146,11 +146,11 @@ export const Editor = () => {
               reaching <main>'s scrollbar and feeding back into the ResizeObserver. */}
 					<div
 						ref={containerRef}
-						className='flex-1 min-h-0 overflow-hidden h-[calc(100%-124px)]'
+						className='flex-1 min-h-0 overflow-visible h-[calc(100%-124px)]'
 					>
 						<canvas ref={canvasRef} />
 					</div>
-					<Footer />
+					<Footer editor={editor} />
 				</main>
 			</div>
 			<MobileSidebar
