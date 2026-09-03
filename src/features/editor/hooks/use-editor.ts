@@ -30,14 +30,21 @@ import {
 	FONT_SIZE,
 } from "@/features/editor/types";
 import { isTextType } from "@/features/editor/utils";
+import { FONT_WEIGHT } from "@/features/editor/constants";
+
+import { useHistory } from "@/features/editor/hooks/use-history";
+import { useClipboard } from "@/features/editor/hooks/use-clipboard";
 import { useAutoResize } from "@/features/editor/hooks/use-auto-resize";
 import { useCanvasEvents } from "@/features/editor/hooks/use-canvas-events";
-import { FONT_WEIGHT } from "@/features/editor/constants";
-import { useClipboard } from "@/features/editor/hooks/use-clipboard";
 import { useAligningGuidelines } from "@/features/editor/hooks/use-aligning-guidelines";
 
 // 1. Build the editor object that will contain all the methods for manipulating the canvas. This object will be created once and memoized, so it doesn't cause unnecessary re-renders. Takes inspiration from the Fabric.js canvas API (fabric-react package / react-canvas).
 const buildEditor = ({
+	save,
+	undo,
+	redo,
+	canRedo,
+	canUndo,
 	copy,
 	paste,
 	canvas,
@@ -80,23 +87,28 @@ const buildEditor = ({
 	};
 
 	return {
+		autoZoom,
+		canUndo,
+		canRedo,
 		getWorkspace,
 		changeSize: (value: { width: number; height: number }) => {
 			const workspace = getWorkspace();
-			if (!workspace) return;
 
-			workspace.set({ ...value });
+			workspace?.set({ ...value });
 			canvas.requestRenderAll();
 			autoZoom();
 
 			// TODO: Save
+			save();
 		},
 		changeBackground: (value) => {
 			const workspace = getWorkspace();
-			if (!workspace) return;
 
-			workspace.set({ fill: value });
+			workspace?.set({ fill: value });
 			canvas.requestRenderAll();
+
+			// TODO: Save
+			save();
 		},
 
 		// --- Clipboard ---
@@ -104,6 +116,8 @@ const buildEditor = ({
 			await copy();
 			await paste();
 		},
+		onUndo: () => undo(),
+		onRedo: () => redo(),
 
 		// --- Image manipulation ---
 		addImage: async (value) => {
@@ -134,9 +148,6 @@ const buildEditor = ({
 		},
 
 		// --- Viewport ---
-		autoZoom: () => {
-			autoZoom();
-		},
 		zoomIn: () => {
 			let zoomRatio = canvas.getZoom();
 			zoomRatio += 0.05;
@@ -543,6 +554,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 	const [strokeDashArray, setStrokeDashArray] =
 		useState<number[]>(STROKE_DASH_ARRAY);
 
+	const { save, undo, redo, canUndo, canRedo } = useHistory({ canvas });
+
 	const { copy, paste } = useClipboard({ canvas });
 
 	const { autoZoom } = useAutoResize({
@@ -551,6 +564,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 	});
 
 	useCanvasEvents({
+		save,
 		canvas,
 		setSelectedObjects,
 		clearSelectionCallback,
@@ -565,6 +579,11 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 		if (!canvas) return undefined;
 
 		return buildEditor({
+			save,
+			undo,
+			redo,
+			canUndo,
+			canRedo,
 			copy,
 			paste,
 			canvas,
@@ -582,6 +601,11 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 			setStrokeDashArray,
 		});
 	}, [
+		save,
+		canRedo,
+		canUndo,
+		undo,
+		redo,
 		copy,
 		paste,
 		canvas,

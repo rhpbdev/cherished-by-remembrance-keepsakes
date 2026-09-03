@@ -104,6 +104,11 @@ export interface EditorHookProps {
 }
 
 export type BuildEditorProps = {
+	save: (skip?: boolean) => void;
+	undo: () => void;
+	redo: () => void;
+	canUndo: () => boolean;
+	canRedo: () => boolean;
 	copy: () => Promise<void>;
 	paste: () => Promise<void>;
 	canvas: Canvas;
@@ -122,6 +127,11 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+	onUndo: () => void;
+	onRedo: () => void;
+	canUndo: () => boolean;
+	canRedo: () => boolean;
+
 	getWorkspace: () => FabricObject | undefined;
 	changeSize: (value: { width: number; height: number }) => void;
 	changeBackground: (value: string) => void;
@@ -209,4 +219,13 @@ declare module "fabric" {
 
 // 2. Global Serialization Registration
 // This instructs Fabric.js to automatically include these keys when calling toObject() or toJSON()
-FabricObject.customProperties = ["name"];
+FabricObject.customProperties = [
+	"name",
+	"gradientAngle",
+	"selectable",
+	"hasControls",
+	"linkData",
+	"editable",
+	"extensionType",
+	"extension",
+];

@@ -88,7 +88,11 @@ export const Editor = () => {
 
 	return (
 		<div className='h-full flex flex-col'>
-			<Navbar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
+			<Navbar
+				editor={editor}
+				activeTool={activeTool}
+				onChangeActiveTool={onChangeActiveTool}
+			/>
 			<div className='absolute h-[calc(100%-124px)] md:h-[calc(100%-68px)] w-full top-17 flex overflow-hidden'>
 				<Sidebar
 					activeTool={activeTool}
