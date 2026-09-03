@@ -56,7 +56,9 @@ const buildEditor = ({
 }: BuildEditorProps): Editor => {
 	// Helper: finds the main canvas area (white background)
 	const getWorkspace = () => {
-		return canvas.getObjects().find((object) => object.name === "clip") as Rect;
+		return canvas
+			.getObjects()
+			.find((object) => object.name === "clip") as FabricObject;
 	};
 
 	// Helper: Standard flow for adding new objects: 1. center → 2. add → 3. select → 4. render
@@ -78,6 +80,7 @@ const buildEditor = ({
 	};
 
 	return {
+		getWorkspace,
 		changeSize: (value: { width: number; height: number }) => {
 			const workspace = getWorkspace();
 			if (!workspace) return;

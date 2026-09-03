@@ -20,6 +20,7 @@ import { StrokeWidthSidebar } from "@/features/editor/components/sidebar/stroke-
 import { OpacitySidebar } from "@/features/editor/components/sidebar/opacity-sidebar";
 import { TextSidebar } from "@/features/editor/components/sidebar/text-sidebar";
 import { ImageSidebar } from "./sidebar/images-sidebar";
+import { SettingsSidebar } from "./sidebar/settings-sidebar";
 
 export const Editor = () => {
 	const [activeTool, setActiveTool] = useState<ActiveTool>("select");
@@ -124,6 +125,11 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<TextSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<SettingsSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}

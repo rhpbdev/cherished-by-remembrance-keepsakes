@@ -122,6 +122,7 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+	getWorkspace: () => FabricObject | undefined;
 	changeSize: (value: { width: number; height: number }) => void;
 	changeBackground: (value: string) => void;
 	// --- Clipboard ---
