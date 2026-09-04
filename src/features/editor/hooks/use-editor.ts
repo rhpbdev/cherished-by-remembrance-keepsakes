@@ -10,6 +10,7 @@ import {
 	InteractiveFabricObject,
 	FabricText,
 	FabricImage,
+	type TDataUrlOptions,
 } from "fabric";
 import { useCallback, useMemo, useState } from "react";
 
@@ -29,7 +30,7 @@ import {
 	FONT_FAMILY,
 	FONT_SIZE,
 } from "@/features/editor/types";
-import { isTextType } from "@/features/editor/utils";
+import { downloadFile, isTextType, transformText } from "@/features/editor/utils";
 import { FONT_WEIGHT } from "@/features/editor/constants";
 
 import { useHistory } from "@/features/editor/hooks/use-history";
@@ -61,6 +62,71 @@ const buildEditor = ({
 	setStrokeWidth,
 	setStrokeDashArray,
 }: BuildEditorProps): Editor => {
+	const generateSaveOptions = () => {
+		const { width, height, left, top } = getWorkspace() as Rect;
+
+		return {
+			name: "Image",
+			format: "png",
+			quality: 1,
+			multiplier: 1,
+			width,
+			height,
+			left,
+			top,
+		} as TDataUrlOptions;
+	};
+
+	const savePng = () => {
+		const options = generateSaveOptions();
+		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+
+		const dataUrl = canvas.toDataURL(options);
+
+        downloadFile(dataUrl, "png");
+        autoZoom();
+	};
+
+	const saveSvg = () => {
+		const options = generateSaveOptions();
+		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+
+		const dataUrl = canvas.toDataURL(options);
+
+        downloadFile(dataUrl, "svg");
+        autoZoom();
+	};
+
+	const saveJpg = () => {
+		const options = generateSaveOptions();
+		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+
+		const dataUrl = canvas.toDataURL(options);
+
+        downloadFile(dataUrl, "jpg");
+        autoZoom();
+	};
+
+	const saveJson = async () => {
+		// const dataUrl = JSON.stringify(canvas.toJSON());
+		const dataUrl = canvas.toJSON();
+
+        // await transformText(JSON.parse(dataUrl).objects);
+        await transformText(dataUrl.objects);
+        const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(dataUrl, null, "\t"))}`;
+        downloadFile(fileString, "json");
+	};
+
+    const loadJson = (json: string) => {
+        const data = JSON.parse(json);
+        canvas.loadFromJSON(data).then(() => {
+            autoZoom();
+            canvas.requestRenderAll();
+        }).catch((error) => {
+            console.error("Failed to load JSON:", error);
+        });
+    };
+
 	// Helper: finds the main canvas area (white background)
 	const getWorkspace = () => {
 		return canvas
@@ -87,6 +153,11 @@ const buildEditor = ({
 	};
 
 	return {
+        savePng,
+        saveSvg,
+        saveJpg,
+        saveJson,
+        loadJson,
 		autoZoom,
 		canUndo,
 		canRedo,

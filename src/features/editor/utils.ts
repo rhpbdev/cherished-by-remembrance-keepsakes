@@ -1,4 +1,4 @@
-import { Point, TMat2D } from 'fabric';
+import { FabricObject, FabricText, Point, Textbox, TMat2D } from 'fabric';
 import { RgbaColor } from 'react-colorful';
 
 export function isTextType(type: string | undefined) {
@@ -39,4 +39,26 @@ export function screenDeltaToCanvasDelta(
   const scale = getViewportScale(viewportTransform);
 
   return screenDelta / scale;
+}
+
+export function downloadFile(file: string, type: string) {
+    const anchorElement = document.createElement('a');
+
+    anchorElement.href = file;
+    anchorElement.download = `${Date.now()}.${type}`;
+    document.body.appendChild(anchorElement);
+    anchorElement.click();
+    anchorElement.remove();
+}
+
+export function transformText(objects: FabricObject[]) {
+  if (!objects) return;
+
+  objects.forEach((item: FabricObject) => {
+    if (item.objects) {
+        transformText(item.objects);
+    } else {
+        item instanceof FabricText && item instanceof Textbox;
+    }
+  })
 }
