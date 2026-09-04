@@ -554,7 +554,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 	const [strokeDashArray, setStrokeDashArray] =
 		useState<number[]>(STROKE_DASH_ARRAY);
 
-	const { save, undo, redo, canUndo, canRedo } = useHistory({ canvas });
+	const { save, undo, redo, canUndo, canRedo, canvasHistory, setHistoryIndex } =
+		useHistory({ canvas });
 
 	const { copy, paste } = useClipboard({ canvas });
 
@@ -668,8 +669,12 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 
 			setCanvas(initialCanvas);
 			setContainer(initialContainer);
+
+			const currentState = JSON.stringify(initialCanvas.toJSON());
+			canvasHistory.current = [currentState];
+			setHistoryIndex(0);
 		},
-		[],
+		[canvasHistory, setHistoryIndex],
 	);
 
 	// Return the init object. Return the editor object.

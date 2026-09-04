@@ -21,34 +21,34 @@ export const useCanvasEvents = ({
 
 		const disposeObjectAdded = canvas.on("object:added", (e) => {
 			console.log("Object added:", e.target);
-			save();
 		});
 
 		const disposeObjectModified = canvas.on("object:modified", (e) => {
 			console.log("Object modified:", e.target);
-			save();
 		});
 
 		const disposeObjectRemoved = canvas.on("object:removed", (e) => {
 			console.log("Object removed:", e.target);
-			save();
 		});
 
 		// Fabric 7.x returns a cleanup function directly from .on()
 		const disposeCreated = canvas.on("selection:created", (e) => {
 			// console.log("Selection created:", e.selected[0]);
 			setSelectedObjects(e.selected || []);
+			save();
 		});
 
 		const disposeUpdated = canvas.on("selection:updated", (e) => {
 			// console.log("Selection updated:", e.selected);
 			setSelectedObjects(e.selected || []);
+			save();
 		});
 
 		const disposeCleared = canvas.on("selection:cleared", () => {
 			// console.log("Selection cleared");
 			setSelectedObjects([]);
 			clearSelectionCallback?.();
+			save();
 		});
 
 		const disposeHoverOn = canvas.on("mouse:over", (e) => {
