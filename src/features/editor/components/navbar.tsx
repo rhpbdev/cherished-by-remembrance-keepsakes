@@ -54,6 +54,42 @@ export const Navbar = ({
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='start' className='min-w-60'>
 						<DropdownMenuGroup>
+                            <DropdownMenuItem
+								onClick={() => editor?.loadJson()}
+								className='flex items-center gap-x-2'
+							>
+								<FileIcon />
+								Load JSON
+							</DropdownMenuItem>
+                            <DropdownMenuItem
+								onClick={() => editor?.saveJson()}
+								className='flex items-center gap-x-2'
+							>
+								<FileIcon />
+								Save JSON
+							</DropdownMenuItem>
+                            <DropdownMenuItem
+								onClick={() => editor?.saveSvg()}
+								className='flex items-center gap-x-2'
+							>
+								<FileIcon />
+								Save SVG
+							</DropdownMenuItem>
+                            <DropdownMenuItem
+								onClick={() => editor?.saveJpg()}
+								className='flex items-center gap-x-2'
+							>
+								<FileIcon />
+								Save JPG
+							</DropdownMenuItem>
+                            <DropdownMenuItem
+								onClick={() => editor?.savePng()}
+								className='flex items-center gap-x-2'
+							>
+								<FileIcon />
+								Save PNG
+							</DropdownMenuItem>
+
 							<DropdownMenuItem
 								onClick={() => console.log("New File")} // TODO: Implement New File functionality
 								className='flex items-center gap-x-2'
@@ -61,11 +97,11 @@ export const Navbar = ({
 								<FileIcon />
 								New File
 								{/* <div>
-                <p>New File</p>
-                <p className='text-[10px] text-muted-foreground'>
-                  Create a new file
-                </p>
-              </div> */}
+                                    <p>New File</p>
+                                    <p className='text-[10px] text-muted-foreground'>
+                                    Create a new file
+                                    </p>
+                                </div> */}
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuSub>
