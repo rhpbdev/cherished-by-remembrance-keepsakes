@@ -10,13 +10,21 @@ export const useHistory = ({ canvas }: UseHistoryProps) => {
 	const canvasHistory = useRef<string[]>([]);
 	const skipSave = useRef<boolean>(false);
 
+	// Mirrors historyIndex so save() can read the current position without
+	// taking it as a dependency. save() is in the useCanvasEvents dep array,
+	// so a new identity there tears down and re-registers every canvas handler.
+	const historyIndexRef = useRef<number>(0);
+
+	const setIndex = useCallback((index: number) => {
+		historyIndexRef.current = index;
+		setHistoryIndex(index);
+	}, []);
+
 	const canUndo = useCallback(() => {
-		console.log("Can undo...");
 		return historyIndex > 0;
 	}, [historyIndex]);
 
 	const canRedo = useCallback(() => {
-		console.log("Can redo...");
 		return historyIndex < canvasHistory.current.length - 1;
 	}, [historyIndex]);
 
@@ -28,15 +36,21 @@ export const useHistory = ({ canvas }: UseHistoryProps) => {
 			const json = JSON.stringify(currentState);
 
 			if (!skip && !skipSave.current) {
+				// Discard any redo branch we have moved off of before appending,
+				// otherwise undo walks back into states the current canvas never
+				// came from.
+				canvasHistory.current = canvasHistory.current.slice(
+					0,
+					historyIndexRef.current + 1,
+				);
+
 				canvasHistory.current.push(json);
-				setHistoryIndex(canvasHistory.current.length - 1);
+				setIndex(canvasHistory.current.length - 1);
 			}
 
 			// TODO: Save callback
-
-			console.log("Saving...");
 		},
-		[canvas],
+		[canvas, setIndex],
 	);
 
 	const undo = useCallback(() => {
@@ -53,7 +67,7 @@ export const useHistory = ({ canvas }: UseHistoryProps) => {
 				?.loadFromJSON(previousState)
 				.then(() => {
 					canvas.requestRenderAll();
-					setHistoryIndex(previousIndex);
+					setIndex(previousIndex);
 					skipSave.current = false;
 				})
 				.catch((error) => {
@@ -61,7 +75,7 @@ export const useHistory = ({ canvas }: UseHistoryProps) => {
 					skipSave.current = false;
 				});
 		}
-	}, [canvas, canUndo, historyIndex]);
+	}, [canvas, canUndo, historyIndex, setIndex]);
 
 	const redo = useCallback(() => {
 		if (canRedo()) {
@@ -77,7 +91,7 @@ export const useHistory = ({ canvas }: UseHistoryProps) => {
 				?.loadFromJSON(nextState)
 				.then(() => {
 					canvas.requestRenderAll();
-					setHistoryIndex(nextIndex);
+					setIndex(nextIndex);
 					skipSave.current = false;
 				})
 				.catch((error) => {
@@ -85,7 +99,17 @@ export const useHistory = ({ canvas }: UseHistoryProps) => {
 					skipSave.current = false;
 				});
 		}
-	}, [canvas, canRedo, historyIndex]);
+	}, [canvas, canRedo, historyIndex, setIndex]);
 
-	return { save, undo, redo, canUndo, canRedo, setHistoryIndex, canvasHistory };
+	return {
+		save,
+		undo,
+		redo,
+		canUndo,
+		canRedo,
+		// Exported as setHistoryIndex so callers (useEditor.init) keep the
+		// mirrored ref in sync; handing out the raw setState would desync it.
+		setHistoryIndex: setIndex,
+		canvasHistory,
+	};
 };
