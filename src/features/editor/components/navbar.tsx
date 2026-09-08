@@ -30,6 +30,7 @@ import { cn } from '@/lib/utils';
 import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useEffect, useState } from 'react';
 
 interface NavbarProps {
   editor: Editor | undefined;
@@ -42,6 +43,29 @@ export const Navbar = ({
   activeTool,
   onChangeActiveTool,
 }: NavbarProps) => {
+  const [carSaleData, setCarSaleData] = useState<string | null>(null);
+  const [testOneData, setTestOneData] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadCarSale = async () => {
+      const res = await fetch('/car_sale_codewithantonio.json');
+      const data = await res.json();
+      if (!data) return;
+      setCarSaleData(JSON.stringify(data));
+    };
+    loadCarSale();
+  }, []);
+
+  useEffect(() => {
+    const loadTestOne = async () => {
+      const res = await fetch('/test_one.json');
+      const data = await res.json();
+      if (!data) return;
+      setTestOneData(JSON.stringify(data));
+    };
+    loadTestOne();
+  }, []);
+
   return (
     <nav className="flex h-[68px] w-full items-center gap-x-2 border-b bg-muted p-2 sm:p-4 lg:gap-x-8 lg:p-6 lg:pl-[24px]">
       <Logo />
@@ -55,11 +79,18 @@ export const Navbar = ({
           <DropdownMenuContent align="start" className="min-w-60">
             <DropdownMenuGroup>
               <DropdownMenuItem
-                onClick={() => editor?.loadJson()}
+                onClick={() => editor?.loadJson(carSaleData!)}
                 className="flex items-center gap-x-2"
               >
                 <FileIcon />
-                Load JSON
+                Load Car Sale
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => editor?.loadJson(testOneData!)}
+                className="flex items-center gap-x-2"
+              >
+                <FileIcon />
+                Load Test One
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => editor?.saveJson()}
