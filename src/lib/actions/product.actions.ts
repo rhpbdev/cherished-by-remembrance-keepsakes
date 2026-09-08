@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { db } from "@/drizzle/db";
-import { ProductTable, ProductVariantTable } from "@/drizzle/schema";
+import { db } from '@/drizzle/db';
+import { ProductTable, ProductVariantTable } from '@/drizzle/schema';
 import {
   and,
   asc,
@@ -12,17 +12,17 @@ import {
   ilike,
   lte,
   type SQL,
-} from "drizzle-orm";
+} from 'drizzle-orm';
 // import { convertToPlainObject } from '../utils';
 import {
   FEATURED_PRODUCTS_LIMIT,
   LATEST_PRODUCTS_LIMIT,
   PAGE_SIZE,
-} from "../constants";
-import { formatError } from "../utils";
-import { revalidatePath } from "next/cache";
-import { insertProductSchema, updateProductSchema } from "../validators";
-import z from "zod";
+} from '../constants';
+import { formatError } from '../utils';
+import { revalidatePath } from 'next/cache';
+import { insertProductSchema, updateProductSchema } from '../validators';
+import z from 'zod';
 
 // Get latest products
 export async function getLatestProducts() {
@@ -81,15 +81,15 @@ export async function getAllProducts({
 }) {
   // Build filters
   const filters = [
-    query && query !== "all" && ilike(ProductTable.name, `%${query}%`),
-    category && category !== "all" && eq(ProductTable.category, category),
+    query && query !== 'all' && ilike(ProductTable.name, `%${query}%`),
+    category && category !== 'all' && eq(ProductTable.category, category),
     price &&
-      price !== "all" &&
+      price !== 'all' &&
       (() => {
-        const [min, max] = price.split("-");
+        const [min, max] = price.split('-');
         return and(gte(ProductTable.price, min), lte(ProductTable.price, max));
       })(),
-    rating && rating !== "all" && gte(ProductTable.rating, rating),
+    rating && rating !== 'all' && gte(ProductTable.rating, rating),
   ].filter(Boolean) as SQL[];
 
   const whereClause = filters.length > 0 ? and(...filters) : undefined;
@@ -129,15 +129,15 @@ export async function deleteProduct(id: string) {
       where: eq(ProductTable.id, id),
     });
 
-    if (!productExists) throw new Error("Product not found");
+    if (!productExists) throw new Error('Product not found');
 
     await db.delete(ProductTable).where(eq(ProductTable.id, id));
 
-    revalidatePath("/admin/products");
+    revalidatePath('/admin/products');
 
     return {
       success: true,
-      message: "Product deleted successfully",
+      message: 'Product deleted successfully',
     };
   } catch (error) {
     return {
@@ -158,11 +158,11 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
       })
       .returning({ id: ProductTable.id });
 
-    revalidatePath("/admin/products");
+    revalidatePath('/admin/products');
 
     return {
       success: true,
-      message: "Product created successfully",
+      message: 'Product created successfully',
       data: { id: created.id },
     };
   } catch (error) {
@@ -181,7 +181,7 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
       where: eq(ProductTable.id, product.id),
     });
 
-    if (!productExists) throw new Error("Product not found");
+    if (!productExists) throw new Error('Product not found');
 
     await db
       .update(ProductTable)
@@ -190,11 +190,11 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
       })
       .where(eq(ProductTable.id, product.id));
 
-    revalidatePath("/admin/products");
+    revalidatePath('/admin/products');
 
     return {
       success: true,
-      message: "Product updated successfully",
+      message: 'Product updated successfully',
     };
   } catch (error) {
     return {

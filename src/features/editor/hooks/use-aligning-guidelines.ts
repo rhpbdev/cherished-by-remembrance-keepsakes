@@ -1,6 +1,6 @@
-import { Canvas } from "fabric";
-import { AligningGuidelines, type AligningLineConfig } from "fabric/extensions";
-import { useEffect } from "react";
+import { Canvas } from 'fabric';
+import { AligningGuidelines, type AligningLineConfig } from 'fabric/extensions';
+import { useEffect } from 'react';
 
 interface UseAligningGuidelinesProps {
   canvas: Canvas | null;
@@ -12,7 +12,7 @@ const config: Partial<AligningLineConfig> = {
   /** Aligning line dimensions */
   width: 1,
   /** Aligning line color */
-  color: "rgba(255,0,0,0.9)",
+  color: 'rgba(255,0,0,0.9)',
 };
 
 // Fabric's interactive Canvas.toCanvasElement (used by toDataURL / toBlob,

@@ -1,61 +1,60 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import {
-	type ActiveTool,
-	type Editor,
-} from "@/features/editor/types";
-import { ToolSidebarWrapper } from "@/features/editor/components/sidebar/tool-sidebar-wrapper";
+import { type ActiveTool, type Editor } from '@/features/editor/types';
+import { ToolSidebarWrapper } from '@/features/editor/components/sidebar/tool-sidebar-wrapper';
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Slider } from "@/components/ui/slider";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Slider } from '@/components/ui/slider';
 
 interface OpacitySidebarProps {
-	editor: Editor | undefined;
-	activeTool: ActiveTool;
-	onChangeActiveTool: (tool: ActiveTool) => void;
+  editor: Editor | undefined;
+  activeTool: ActiveTool;
+  onChangeActiveTool: (tool: ActiveTool) => void;
 }
 
 export const OpacitySidebar = ({
-	editor,
-	activeTool,
-	onChangeActiveTool,
+  editor,
+  activeTool,
+  onChangeActiveTool,
 }: OpacitySidebarProps) => {
-	const selectedObject = editor?.selectedObjects[0];
-	const [opacity, setOpacity] = useState<number>(() => editor?.getActiveOpacity() ?? 1);
-	const [prevSelectedObject, setPrevSelectedObject] = useState(selectedObject);
+  const selectedObject = editor?.selectedObjects[0];
+  const [opacity, setOpacity] = useState<number>(
+    () => editor?.getActiveOpacity() ?? 1,
+  );
+  const [prevSelectedObject, setPrevSelectedObject] = useState(selectedObject);
 
-	if (selectedObject !== prevSelectedObject) {
-		setPrevSelectedObject(selectedObject);
-		setOpacity(selectedObject?.get("opacity") ?? 1);
-	}
+  if (selectedObject !== prevSelectedObject) {
+    setPrevSelectedObject(selectedObject);
+    setOpacity(selectedObject?.get('opacity') ?? 1);
+  }
 
-	const onClose = () => {
-		onChangeActiveTool("select");
-	};
+  const onClose = () => {
+    onChangeActiveTool('select');
+  };
 
-	const onChange = (value: number) => {
-		editor?.changeOpacity(value);
-		setOpacity(value);
-	};
+  const onChange = (value: number) => {
+    editor?.changeOpacity(value);
+    setOpacity(value);
+  };
 
-	return (
-		<ToolSidebarWrapper
-			isOpen={activeTool === "opacity"}
-			onClose={onClose}
-			title='Opacity'
-			description='Change the opacity of the selected object.'
-		>
-			<ScrollArea>
-				<div className='p-4 space-y-6 border-b'>
-					<Slider
-						value={[opacity]}
-						onValueChange={(values) => onChange(values[0])}
-						max={1}
-						min={0}
-						step={0.01}
-					></Slider>
-				</div>
-			</ScrollArea>
-		</ToolSidebarWrapper>
-	);
+  return (
+    <ToolSidebarWrapper
+      isOpen={activeTool === 'opacity'}
+      onClose={onClose}
+      title="Opacity"
+      description="Change the opacity of the selected object."
+    >
+      <ScrollArea>
+        <div className="space-y-6 border-b p-4">
+          <Slider
+            value={[opacity]}
+            onValueChange={(values) => onChange(values[0])}
+            max={1}
+            min={0}
+            step={0.01}
+          ></Slider>
+        </div>
+      </ScrollArea>
+    </ToolSidebarWrapper>
+  );
 };

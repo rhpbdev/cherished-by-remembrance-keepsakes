@@ -1,7 +1,7 @@
-import ComingSoon from "@/components/shared/coming-soon";
+import ComingSoon from '@/components/shared/coming-soon';
 
 const ContactPage = () => {
-  return <ComingSoon title='Contact' />;
+  return <ComingSoon title="Contact" />;
 };
 
 export default ContactPage;

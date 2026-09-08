@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import z from 'zod';
 import {
   Form,
   FormControl,
@@ -10,14 +10,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
-import { Button } from "@/components/ui/button";
-import { LoadingSwap } from "@/components/ui/loading-swap";
-import { authClient } from "@/lib/auth/auth-client";
-import { toast } from "sonner";
-import { NumberInput } from "@/components/ui/number-input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
+import { Button } from '@/components/ui/button';
+import { LoadingSwap } from '@/components/ui/loading-swap';
+import { authClient } from '@/lib/auth/auth-client';
+import { toast } from 'sonner';
+import { NumberInput } from '@/components/ui/number-input';
 
 const signUpSchema = z.object({
   name: z.string().min(1),
@@ -36,9 +36,9 @@ export function SignUpTab({
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      name: '',
+      email: '',
+      password: '',
     },
   });
 
@@ -46,10 +46,10 @@ export function SignUpTab({
 
   async function handleSignUp(data: SignUpForm) {
     const res = await authClient.signUp.email(
-      { ...data, callbackURL: "/" },
+      { ...data, callbackURL: '/' },
       {
         onError: (error) => {
-          toast.error(error.error.message || "Failed to sign up");
+          toast.error(error.error.message || 'Failed to sign up');
         },
       },
     );
@@ -61,10 +61,10 @@ export function SignUpTab({
 
   return (
     <Form {...form}>
-      <form className='space-y-4' onSubmit={form.handleSubmit(handleSignUp)}>
+      <form className="space-y-4" onSubmit={form.handleSubmit(handleSignUp)}>
         <FormField
           control={form.control}
-          name='name'
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -78,12 +78,12 @@ export function SignUpTab({
 
         <FormField
           control={form.control}
-          name='email'
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type='email' {...field} />
+                <Input type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,12 +92,12 @@ export function SignUpTab({
 
         <FormField
           control={form.control}
-          name='password'
+          name="password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <PasswordInput {...field} aria-label='Password' />
+                <PasswordInput {...field} aria-label="Password" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,7 +106,7 @@ export function SignUpTab({
 
         <FormField
           control={form.control}
-          name='favoriteNumber'
+          name="favoriteNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Favorite Number</FormLabel>
@@ -118,7 +118,7 @@ export function SignUpTab({
           )}
         />
 
-        <Button type='submit' disabled={isSubmitting} className='w-full'>
+        <Button type="submit" disabled={isSubmitting} className="w-full">
           <LoadingSwap isLoading={isSubmitting}>Sign Up</LoadingSwap>
         </Button>
       </form>

@@ -6,25 +6,25 @@ import Link from 'next/link';
 import { ArrowLeftIcon } from 'lucide-react';
 
 export const metadata: Metadata = {
-	title: 'Shopping Cart',
+  title: 'Shopping Cart',
 };
 
 const CartPage = async () => {
-	const cart = await getMyCart();
+  const cart = await getMyCart();
 
-	return (
-		<div className='wrapper'>
-			<Link
-				href={'/dashboard'}
-				className='text-xs text-primary font-medium flex items-center'
-			>
-				<ArrowLeftIcon className='size-3 mr-1' />
-				Back to Dashboard
-			</Link>
-			<CartTableComponent cart={cart} />
-			<RecommendedProducts />
-		</div>
-	);
+  return (
+    <div className="wrapper">
+      <Link
+        href={'/dashboard'}
+        className="flex items-center text-xs font-medium text-primary"
+      >
+        <ArrowLeftIcon className="mr-1 size-3" />
+        Back to Dashboard
+      </Link>
+      <CartTableComponent cart={cart} />
+      <RecommendedProducts />
+    </div>
+  );
 };
 
 export default CartPage;

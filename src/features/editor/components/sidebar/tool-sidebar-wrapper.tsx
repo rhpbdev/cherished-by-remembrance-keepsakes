@@ -35,13 +35,13 @@ export const ToolSidebarWrapper = ({
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <SheetContent side='left' className='p-0 gap-0'>
-          <SheetHeader className='p-4 border-b space-y-1 text-left'>
-            <SheetTitle className='text-sm font-medium normal-case tracking-normal font-sans'>
+        <SheetContent side="left" className="gap-0 p-0">
+          <SheetHeader className="space-y-1 border-b p-4 text-left">
+            <SheetTitle className="font-sans text-sm font-medium tracking-normal normal-case">
               {title}
             </SheetTitle>
             {description && (
-              <SheetDescription className='text-xs'>
+              <SheetDescription className="text-xs">
                 {description}
               </SheetDescription>
             )}
@@ -55,7 +55,7 @@ export const ToolSidebarWrapper = ({
   return (
     <aside
       className={cn(
-        'bg-white relative border-r z-40 w-90 h-full flex flex-col',
+        'relative z-40 flex h-full w-90 flex-col border-r bg-white',
         isOpen ? 'visible' : 'hidden',
       )}
     >

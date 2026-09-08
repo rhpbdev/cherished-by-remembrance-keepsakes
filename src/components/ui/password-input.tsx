@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import {
   useState,
   createContext,
@@ -13,20 +13,20 @@ import {
   useEffect,
   useDeferredValue,
   useMemo,
-} from "react";
-import { ZxcvbnFactory } from "@zxcvbn-ts/core";
+} from 'react';
+import { ZxcvbnFactory } from '@zxcvbn-ts/core';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/components/ui/input-group";
+} from '@/components/ui/input-group';
 
 const PasswordInputContext = createContext<{ password: string } | null>(null);
 
@@ -36,11 +36,11 @@ export function PasswordInput({
   value,
   defaultValue,
   ...props
-}: Omit<ComponentProps<typeof Input>, "type"> & {
+}: Omit<ComponentProps<typeof Input>, 'type'> & {
   children?: ReactNode;
 }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState(defaultValue ?? "");
+  const [password, setPassword] = useState(defaultValue ?? '');
 
   const Icon = showPassword ? EyeOffIcon : EyeIcon;
   const currentValue = value ?? password;
@@ -52,23 +52,23 @@ export function PasswordInput({
 
   return (
     <PasswordInputContext value={{ password: currentValue.toString() }}>
-      <div className='space-y-3'>
+      <div className="space-y-3">
         <InputGroup>
           <InputGroupInput
             {...props}
             value={value}
             defaultValue={defaultValue}
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
           />
-          <InputGroupAddon align='inline-end'>
+          <InputGroupAddon align="inline-end">
             <InputGroupButton
-              size='icon-xs'
+              size="icon-xs"
               onClick={() => setShowPassword((p) => !p)}
             >
-              <Icon className='size-4.5' />
-              <span className='sr-only'>
-                {showPassword ? "Hide password" : "Show password"}
+              <Icon className="size-4.5" />
+              <span className="sr-only">
+                {showPassword ? 'Hide password' : 'Show password'}
               </span>
             </InputGroupButton>
           </InputGroupAddon>
@@ -95,8 +95,8 @@ export function PasswordInputStrengthChecker() {
 
   useEffect(() => {
     Promise.all([
-      import("@zxcvbn-ts/language-common"),
-      import("@zxcvbn-ts/language-en"),
+      import('@zxcvbn-ts/language-common'),
+      import('@zxcvbn-ts/language-en'),
     ])
       .then(([common, english]) => {
         setZxcvbn(
@@ -115,20 +115,20 @@ export function PasswordInputStrengthChecker() {
   }, []);
 
   function getLabel() {
-    if (deferredPassword.length === 0) return "Password strength";
-    if (zxcvbn == null) return "Loading strength checker";
+    if (deferredPassword.length === 0) return 'Password strength';
+    if (zxcvbn == null) return 'Loading strength checker';
 
     const score = strengthResult.score;
     switch (score) {
       case 0:
       case 1:
-        return "Very weak";
+        return 'Very weak';
       case 2:
-        return "Weak";
+        return 'Weak';
       case 3:
-        return "Strong";
+        return 'Strong';
       case 4:
-        return "Very strong";
+        return 'Very strong';
       default:
         throw new Error(`Invalid score: ${score satisfies never}`);
     }
@@ -139,44 +139,44 @@ export function PasswordInputStrengthChecker() {
   if (errorLoadingOptions) return null;
 
   return (
-    <div className='space-y-0.5'>
+    <div className="space-y-0.5">
       <div
-        role='progressbar'
-        aria-label='Password Strength'
+        role="progressbar"
+        aria-label="Password Strength"
         aria-valuenow={strengthResult.score}
         aria-valuemin={0}
         aria-valuemax={4}
         aria-valuetext={label}
-        className='flex gap-1'
+        className="flex gap-1"
       >
         {Array.from({ length: 4 }).map((_, i) => {
           const color =
-            strengthResult.score >= 3 ? "bg-primary" : "bg-destructive";
+            strengthResult.score >= 3 ? 'bg-primary' : 'bg-destructive';
 
           return (
             <div
               key={i}
               className={cn(
-                "h-1 flex-1 rounded-full",
-                strengthResult.score > i ? color : "bg-secondary",
+                'h-1 flex-1 rounded-full',
+                strengthResult.score > i ? color : 'bg-secondary',
               )}
             />
           );
         })}
       </div>
-      <div className='flex justify-end text-sm text-muted-foreground'>
+      <div className="flex justify-end text-sm text-muted-foreground">
         {strengthResult.feedback.warning == null ? (
           label
         ) : (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className='underline underline-offset-1'>
+              <TooltipTrigger className="underline underline-offset-1">
                 {label}
               </TooltipTrigger>
               <TooltipContent
-                side='bottom'
+                side="bottom"
                 sideOffset={4}
-                className='text-base'
+                className="text-base"
               >
                 {strengthResult.feedback.warning}
               </TooltipContent>
@@ -192,7 +192,7 @@ const usePasswordInput = () => {
   const context = useContext(PasswordInputContext);
   if (context == null) {
     throw new Error(
-      "usePasswordInput must be used within a PasswordInputContext",
+      'usePasswordInput must be used within a PasswordInputContext',
     );
   }
   return context;

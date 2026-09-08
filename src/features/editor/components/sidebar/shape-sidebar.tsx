@@ -30,11 +30,11 @@ export const ShapeSidebar = ({
     <ToolSidebarWrapper
       isOpen={activeTool === 'elements'}
       onClose={onClose}
-      title='Elements'
-      description='Add shapes, lines, icons and more to your design.'
+      title="Elements"
+      description="Add shapes, lines, icons and more to your design."
     >
       <ScrollArea>
-        <div className='grid grid-cols-3 gap-4 p-4'>
+        <div className="grid grid-cols-3 gap-4 p-4">
           <ShapeTool onClick={() => editor?.addCircle()} icon={CircleIcon} />
           <ShapeTool onClick={() => editor?.addRectangle()} icon={SquareIcon} />
           <ShapeTool
@@ -44,7 +44,7 @@ export const ShapeSidebar = ({
           <ShapeTool
             onClick={() => editor?.addDiamond()}
             icon={SquareIcon}
-            iconClassName='rotate-45'
+            iconClassName="rotate-45"
           />
           <ShapeTool
             onClick={() => editor?.addTriangle()}
@@ -53,7 +53,7 @@ export const ShapeSidebar = ({
           <ShapeTool
             onClick={() => editor?.addTriangleInverse()}
             icon={TriangleIcon}
-            iconClassName='rotate-180'
+            iconClassName="rotate-180"
           />
         </div>
       </ScrollArea>

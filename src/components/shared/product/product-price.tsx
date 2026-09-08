@@ -1,23 +1,23 @@
 import { cn } from '@/lib/utils';
 
 const ProductPrice = ({
-	value,
-	className,
+  value,
+  className,
 }: {
-	value: number;
-	className?: string;
+  value: number;
+  className?: string;
 }) => {
-	const stringValue = value.toFixed(2);
-	// Get the int/float
-	const [intValue, floatValue] = stringValue.split('.');
+  const stringValue = value.toFixed(2);
+  // Get the int/float
+  const [intValue, floatValue] = stringValue.split('.');
 
-	return (
-		<p className={cn('text-2xl', className)}>
-			<span className='text-xs align-super'>$</span>
-			{intValue}
-			<span className='text-xs align-super'>.{floatValue}</span>
-		</p>
-	);
+  return (
+    <p className={cn('text-2xl', className)}>
+      <span className="align-super text-xs">$</span>
+      {intValue}
+      <span className="align-super text-xs">.{floatValue}</span>
+    </p>
+  );
 };
 
 export default ProductPrice;

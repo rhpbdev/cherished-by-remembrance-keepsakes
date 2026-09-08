@@ -11,8 +11,8 @@ interface SidebarProps {
 
 export const Sidebar = ({ activeTool, onChangeActiveTool }: SidebarProps) => {
   return (
-    <aside className='bg-muted hidden md:flex flex-col w-21 h-full overflow-y-auto border-r-1'>
-      <ul className='flex flex-col'>
+    <aside className="hidden h-full w-21 flex-col overflow-y-auto border-r-1 bg-muted md:flex">
+      <ul className="flex flex-col">
         {SIDEBAR_ROUTES.map((route) => (
           <SidebarItem
             key={route.tool}

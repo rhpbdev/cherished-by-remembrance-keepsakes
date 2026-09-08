@@ -1,166 +1,166 @@
-"use client";
+'use client';
 
-import { Canvas } from "fabric";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Canvas } from 'fabric';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
-	selectionDependentTools,
-	type ActiveTool,
-} from "@/features/editor/types";
-import { Navbar } from "@/features/editor/components/navbar";
-import { Footer } from "@/features/editor/components/footer";
-import { Sidebar } from "@/features/editor/components/sidebar/sidebar";
-import { MobileSidebar } from "@/features/editor/components/sidebar/mobile-sidebar";
-import { useEditor } from "@/features/editor/hooks/use-editor";
-import { Toolbar } from "@/features/editor/components/toolbar/toolbar";
-import { ShapeSidebar } from "@/features/editor/components/sidebar/shape-sidebar";
-import { FillColorSidebar } from "@/features/editor/components/sidebar/fill-color-sidebar";
-import { StrokeColorSidebar } from "@/features/editor/components/sidebar/stroke-color-sidebar";
-import { StrokeWidthSidebar } from "@/features/editor/components/sidebar/stroke-width-sidebar";
-import { OpacitySidebar } from "@/features/editor/components/sidebar/opacity-sidebar";
-import { TextSidebar } from "@/features/editor/components/sidebar/text-sidebar";
-import { ImageSidebar } from "./sidebar/images-sidebar";
-import { SettingsSidebar } from "./sidebar/settings-sidebar";
+  selectionDependentTools,
+  type ActiveTool,
+} from '@/features/editor/types';
+import { Navbar } from '@/features/editor/components/navbar';
+import { Footer } from '@/features/editor/components/footer';
+import { Sidebar } from '@/features/editor/components/sidebar/sidebar';
+import { MobileSidebar } from '@/features/editor/components/sidebar/mobile-sidebar';
+import { useEditor } from '@/features/editor/hooks/use-editor';
+import { Toolbar } from '@/features/editor/components/toolbar/toolbar';
+import { ShapeSidebar } from '@/features/editor/components/sidebar/shape-sidebar';
+import { FillColorSidebar } from '@/features/editor/components/sidebar/fill-color-sidebar';
+import { StrokeColorSidebar } from '@/features/editor/components/sidebar/stroke-color-sidebar';
+import { StrokeWidthSidebar } from '@/features/editor/components/sidebar/stroke-width-sidebar';
+import { OpacitySidebar } from '@/features/editor/components/sidebar/opacity-sidebar';
+import { TextSidebar } from '@/features/editor/components/sidebar/text-sidebar';
+import { ImageSidebar } from './sidebar/images-sidebar';
+import { SettingsSidebar } from './sidebar/settings-sidebar';
 
 export const Editor = () => {
-	const [activeTool, setActiveTool] = useState<ActiveTool>("select");
+  const [activeTool, setActiveTool] = useState<ActiveTool>('select');
 
-	// Put inside useCallback to prevent unnecessary re-renders of the Sidebar component when activeTool changes.
-	// We will use this later inside a useEffect so we need it to be memoized.
-	const onChangeActiveTool = useCallback(
-		(tool: ActiveTool) => {
-			if (tool === activeTool) {
-				return setActiveTool("select");
-			}
+  // Put inside useCallback to prevent unnecessary re-renders of the Sidebar component when activeTool changes.
+  // We will use this later inside a useEffect so we need it to be memoized.
+  const onChangeActiveTool = useCallback(
+    (tool: ActiveTool) => {
+      if (tool === activeTool) {
+        return setActiveTool('select');
+      }
 
-			if (tool === "templates") {
-				// TODO: Open templates modal
-			}
+      if (tool === 'templates') {
+        // TODO: Open templates modal
+      }
 
-			if (activeTool === "templates") {
-				// TODO: Close templates modal
-			}
+      if (activeTool === 'templates') {
+        // TODO: Close templates modal
+      }
 
-			if (tool === "draw") {
-				// TODO: Enable drawing mode
-			}
+      if (tool === 'draw') {
+        // TODO: Enable drawing mode
+      }
 
-			if (activeTool === "draw") {
-				// TODO: Disable drawing mode
-			}
+      if (activeTool === 'draw') {
+        // TODO: Disable drawing mode
+      }
 
-			setActiveTool(tool);
-		},
-		[activeTool],
-	);
+      setActiveTool(tool);
+    },
+    [activeTool],
+  );
 
-	const onClearSelection = useCallback(() => {
-		if (selectionDependentTools.includes(activeTool)) {
-			setActiveTool("select");
-		}
-	}, [activeTool]);
+  const onClearSelection = useCallback(() => {
+    if (selectionDependentTools.includes(activeTool)) {
+      setActiveTool('select');
+    }
+  }, [activeTool]);
 
-	// Call the useEditor hook to get access to the editor context, including the init function
-	const { init, editor } = useEditor({
-		clearSelectionCallback: onClearSelection,
-	});
+  // Call the useEditor hook to get access to the editor context, including the init function
+  const { init, editor } = useEditor({
+    clearSelectionCallback: onClearSelection,
+  });
 
-	const canvasRef = useRef(null);
-	const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-	// Initialize the Fabric.js canvas when the component mounts
-	useEffect(() => {
-		console.log("Initializing canvas...");
-		const canvas = new Canvas(canvasRef.current!, {
-			controlsAboveOverlay: true,
-			preserveObjectStacking: true,
-		});
+  // Initialize the Fabric.js canvas when the component mounts
+  useEffect(() => {
+    console.log('Initializing canvas...');
+    const canvas = new Canvas(canvasRef.current!, {
+      controlsAboveOverlay: true,
+      preserveObjectStacking: true,
+    });
 
-		init({
-			initialCanvas: canvas,
-			initialContainer: containerRef.current!,
-		});
+    init({
+      initialCanvas: canvas,
+      initialContainer: containerRef.current!,
+    });
 
-		return () => {
-			canvas.dispose();
-		};
-	}, [init]);
+    return () => {
+      canvas.dispose();
+    };
+  }, [init]);
 
-	return (
-		<div className='h-full flex flex-col'>
-			<Navbar
-				editor={editor}
-				activeTool={activeTool}
-				onChangeActiveTool={onChangeActiveTool}
-			/>
-			<div className='absolute h-[calc(100%-124px)] md:h-[calc(100%-68px)] w-full top-17 flex overflow-hidden'>
-				<Sidebar
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<ShapeSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<FillColorSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<StrokeColorSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<StrokeWidthSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<ImageSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<OpacitySidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<TextSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<SettingsSidebar
-					editor={editor}
-					activeTool={activeTool}
-					onChangeActiveTool={onChangeActiveTool}
-				/>
-				<main className='flex-1 overflow-auto relative flex flex-col bg-muted/20'>
-					<Toolbar
-						editor={editor}
-						activeTool={activeTool}
-						onChangeActiveTool={onChangeActiveTool}
-						key={JSON.stringify(editor?.canvas.getActiveObject())}
-					/>
-					{/* overflow-hidden + min-h-0 keep the canvas from ever growing this
+  return (
+    <div className="flex h-full flex-col">
+      <Navbar
+        editor={editor}
+        activeTool={activeTool}
+        onChangeActiveTool={onChangeActiveTool}
+      />
+      <div className="absolute top-17 flex h-[calc(100%-124px)] w-full overflow-hidden md:h-[calc(100%-68px)]">
+        <Sidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <ShapeSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <FillColorSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <StrokeColorSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <StrokeWidthSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <ImageSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <OpacitySidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <TextSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <SettingsSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <main className="relative flex flex-1 flex-col overflow-auto bg-muted/20">
+          <Toolbar
+            editor={editor}
+            activeTool={activeTool}
+            onChangeActiveTool={onChangeActiveTool}
+            key={JSON.stringify(editor?.canvas.getActiveObject())}
+          />
+          {/* overflow-hidden + min-h-0 keep the canvas from ever growing this
               container: anything the canvas spills stays clipped here instead of
               reaching <main>'s scrollbar and feeding back into the ResizeObserver. */}
-					<div
-						ref={containerRef}
-						className='flex-1 min-h-0 overflow-visible h-[calc(100%-124px)]'
-					>
-						<canvas ref={canvasRef} />
-					</div>
-					<Footer editor={editor} />
-				</main>
-			</div>
-			<MobileSidebar
-				activeTool={activeTool}
-				onChangeActiveTool={onChangeActiveTool}
-			/>
-		</div>
-	);
+          <div
+            ref={containerRef}
+            className="h-[calc(100%-124px)] min-h-0 flex-1 overflow-visible"
+          >
+            <canvas ref={canvasRef} />
+          </div>
+          <Footer editor={editor} />
+        </main>
+      </div>
+      <MobileSidebar
+        activeTool={activeTool}
+        onChangeActiveTool={onChangeActiveTool}
+      />
+    </div>
+  );
 };

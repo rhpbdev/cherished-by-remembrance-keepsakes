@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 import {
   Sidebar,
@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 // import { Skeleton } from '@/components/ui/skeleton';
 // import { OrganizationSwitcher, UserButton, useClerk } from '@clerk/nextjs';
 import {
@@ -27,8 +27,8 @@ import {
   Volume2Icon,
   SettingsIcon,
   HeadphonesIcon,
-} from "lucide-react";
-import Link from "next/link";
+} from 'lucide-react';
+import Link from 'next/link';
 
 interface MenuItem {
   title: string;
@@ -47,7 +47,7 @@ function NavSection({ label, items, pathname }: NavSectionProps) {
   return (
     <SidebarGroup>
       {label && (
-        <SidebarGroupLabel className='text-[13px] uppercase text-muted-foreground'>
+        <SidebarGroupLabel className="text-[13px] text-muted-foreground uppercase">
           {label}
         </SidebarGroupLabel>
       )}
@@ -59,14 +59,14 @@ function NavSection({ label, items, pathname }: NavSectionProps) {
                 asChild={!!item.url}
                 isActive={
                   item.url
-                    ? item.url === "/"
-                      ? pathname === "/"
+                    ? item.url === '/'
+                      ? pathname === '/'
                       : pathname.startsWith(item.url)
                     : false
                 }
                 onClick={item.onClick}
                 tooltip={item.title}
-                className='h-9 px-3 py-2 text-[13px] tracking-tight font-medium border border-transparent data-[active=true]:border-border data-[active=true]:shadow-[0px_1px_1px_0px_rgba(44,54,53,0.03),inset_0px_0px_0px_2px_white]'
+                className="h-9 border border-transparent px-3 py-2 text-[13px] font-medium tracking-tight data-[active=true]:border-border data-[active=true]:shadow-[0px_1px_1px_0px_rgba(44,54,53,0.03),inset_0px_0px_0px_2px_white]"
               >
                 {item.url ? (
                   <Link href={item.url}>
@@ -94,56 +94,56 @@ export function DashboardSidebar() {
 
   const mainMenuItems: MenuItem[] = [
     {
-      title: "Dashboard",
-      url: "/",
+      title: 'Dashboard',
+      url: '/',
       icon: HomeIcon,
     },
     {
-      title: "Explore voices",
-      url: "/voices",
+      title: 'Explore voices',
+      url: '/voices',
       icon: LayoutGridIcon,
     },
     {
-      title: "Text to speech",
-      url: "/text-to-speech",
+      title: 'Text to speech',
+      url: '/text-to-speech',
       icon: AudioLinesIcon,
     },
     {
-      title: "Voice cloning",
+      title: 'Voice cloning',
       icon: Volume2Icon,
     },
   ];
 
   const othersMenuItems: MenuItem[] = [
     {
-      title: "Settings",
+      title: 'Settings',
       icon: SettingsIcon,
       //   onClick: () => clerk.openOrganizationProfile(),
       onClick: () => {},
     },
     {
-      title: "Help and support",
-      url: "mailto:michael.s@rockyheights.com",
+      title: 'Help and support',
+      url: 'mailto:michael.s@rockyheights.com',
       icon: HeadphonesIcon,
     },
   ];
 
   return (
     <>
-      <Sidebar collapsible='icon'>
-        <SidebarHeader className='flex flex-col gap-4 pt-4'>
-          <div className='flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0'>
+      <Sidebar collapsible="icon">
+        <SidebarHeader className="flex flex-col gap-4 pt-4">
+          <div className="flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
             <Image
-              src='/logo.svg'
-              alt='Resonance'
+              src="/logo.svg"
+              alt="Resonance"
               width={24}
               height={24}
-              className='rounded-sm'
+              className="rounded-sm"
             />
-            <span className='group-data-[collapsible=icon]:hidden font-semibold text-lg tracking-tighter text-foreground'>
+            <span className="text-lg font-semibold tracking-tighter text-foreground group-data-[collapsible=icon]:hidden">
               Resonance
             </span>
-            <SidebarTrigger className='ml-auto lg:hidden' />
+            <SidebarTrigger className="ml-auto lg:hidden" />
           </div>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -171,17 +171,17 @@ export function DashboardSidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <div className='border-b border-dashed border-border' />
+        <div className="border-b border-dashed border-border" />
         <SidebarContent>
           <NavSection items={mainMenuItems} pathname={pathname} />
           <NavSection
-            label='Others'
+            label="Others"
             items={othersMenuItems}
             pathname={pathname}
           />
         </SidebarContent>
-        <div className='border-b border-dashed border-border' />
-        <SidebarFooter className='gap-3 py-3'>
+        <div className="border-b border-dashed border-border" />
+        <SidebarFooter className="gap-3 py-3">
           <SidebarMenu>
             <SidebarMenuItem>
               {/* <UserButton

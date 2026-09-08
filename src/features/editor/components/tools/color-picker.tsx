@@ -1,5 +1,5 @@
-import { RgbaStringColorPicker } from "react-colorful";
-import { COLORS } from "../../types";
+import { RgbaStringColorPicker } from 'react-colorful';
+import { COLORS } from '../../types';
 
 interface ColorPickerProps {
   value: string;
@@ -15,15 +15,15 @@ export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
         color={value}
         onChange={(color) => onChange(color)}
         onChangeEnd={() => onChange(value)}
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
       />
-      <div className='mt-4 flex flex-wrap gap-2'>
+      <div className="mt-4 flex flex-wrap gap-2">
         {colorMap.map((color) => (
           <button
             key={color.value}
-            className='rounded-xs size-6 border'
-            style={{ background: color.value, cursor: "pointer" }}
-            title='Color Picker'
+            className="size-6 rounded-xs border"
+            style={{ background: color.value, cursor: 'pointer' }}
+            title="Color Picker"
             onClick={() => onChange(color.value)}
           />
         ))}

@@ -2,11 +2,11 @@ import {
   STROKE_COLOR,
   type ActiveTool,
   type Editor,
-} from "@/features/editor/types";
-import { ToolSidebarWrapper } from "@/features/editor/components/sidebar/tool-sidebar-wrapper";
+} from '@/features/editor/types';
+import { ToolSidebarWrapper } from '@/features/editor/components/sidebar/tool-sidebar-wrapper';
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ColorPicker } from "@/features/editor/components/tools/color-picker";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { ColorPicker } from '@/features/editor/components/tools/color-picker';
 
 interface StrokeColorSidebarProps {
   editor: Editor | undefined;
@@ -22,7 +22,7 @@ export const StrokeColorSidebar = ({
   const value = editor?.getActiveStrokeColor() || STROKE_COLOR;
 
   const onClose = () => {
-    onChangeActiveTool("select");
+    onChangeActiveTool('select');
   };
 
   const onChange = (value: string) => {
@@ -31,13 +31,13 @@ export const StrokeColorSidebar = ({
 
   return (
     <ToolSidebarWrapper
-      isOpen={activeTool === "stroke-color"}
+      isOpen={activeTool === 'stroke-color'}
       onClose={onClose}
-      title='Stroke Color'
-      description='Change the stroke color of the selected object.'
+      title="Stroke Color"
+      description="Change the stroke color of the selected object."
     >
       <ScrollArea>
-        <div className='p-4 space-y-6'>
+        <div className="space-y-6 p-4">
           <ColorPicker value={value} onChange={onChange} />
         </div>
       </ScrollArea>

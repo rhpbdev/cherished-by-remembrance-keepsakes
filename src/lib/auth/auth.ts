@@ -1,23 +1,23 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/drizzle/db";
-import { nextCookies } from "better-auth/next-js";
-import { sendPasswordResetEmail } from "../emails/password-reset-email";
-import { sendEmailVerificationEmail } from "../emails/email-verification";
-import { createAuthMiddleware } from "better-auth/api";
-import { sendWelcomeEmail } from "../emails/welcome-email";
-import { sendDeleteAccountVerificationEmail } from "../emails/delete-account-verification";
-import { twoFactor } from "better-auth/plugins/two-factor";
-import { passkey } from "@better-auth/passkey";
-import { admin as adminPlugin } from "better-auth/plugins/admin";
-import { organization } from "better-auth/plugins/organization";
-import { ac, admin, user } from "@/components/auth/permissions";
-import { sendOrganizationInviteEmail } from "../emails/organization-invite-email";
-import { and, desc, eq } from "drizzle-orm";
-import { member } from "@/drizzle/schema";
-import { stripe } from "@better-auth/stripe";
-import Stripe from "stripe";
-import { STRIPE_PLANS } from "./stripe";
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { db } from '@/drizzle/db';
+import { nextCookies } from 'better-auth/next-js';
+import { sendPasswordResetEmail } from '../emails/password-reset-email';
+import { sendEmailVerificationEmail } from '../emails/email-verification';
+import { createAuthMiddleware } from 'better-auth/api';
+import { sendWelcomeEmail } from '../emails/welcome-email';
+import { sendDeleteAccountVerificationEmail } from '../emails/delete-account-verification';
+import { twoFactor } from 'better-auth/plugins/two-factor';
+import { passkey } from '@better-auth/passkey';
+import { admin as adminPlugin } from 'better-auth/plugins/admin';
+import { organization } from 'better-auth/plugins/organization';
+import { ac, admin, user } from '@/components/auth/permissions';
+import { sendOrganizationInviteEmail } from '../emails/organization-invite-email';
+import { and, desc, eq } from 'drizzle-orm';
+import { member } from '@/drizzle/schema';
+import { stripe } from '@better-auth/stripe';
+import Stripe from 'stripe';
+import { STRIPE_PLANS } from './stripe';
 
 interface User {
   user: {
@@ -29,11 +29,11 @@ interface User {
 }
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-07-29.dahlia",
+  apiVersion: '2026-07-29.dahlia',
 });
 
 export const auth = betterAuth({
-  appName: "Better Auth Demo",
+  appName: 'Better Auth Demo',
   user: {
     changeEmail: {
       enabled: true,
@@ -52,7 +52,7 @@ export const auth = betterAuth({
     },
     additionalFields: {
       favoriteNumber: {
-        type: "number",
+        type: 'number',
         required: true,
       },
     },
@@ -95,8 +95,8 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       mapProfileToUser: (profile) => {
         return {
-          firstName: profile.given_name || "",
-          lastName: profile.family_name || "",
+          firstName: profile.given_name || '',
+          lastName: profile.family_name || '',
           favoriteNumber: 0,
         };
       },
@@ -147,11 +147,11 @@ export const auth = betterAuth({
           });
 
           if (
-            action === "upgrade-subscription" ||
-            action === "cancel-subscription" ||
-            action === "restore-subscription"
+            action === 'upgrade-subscription' ||
+            action === 'cancel-subscription' ||
+            action === 'restore-subscription'
           ) {
-            return memberItem?.role === "owner";
+            return memberItem?.role === 'owner';
           }
 
           return memberItem != null;
@@ -163,11 +163,11 @@ export const auth = betterAuth({
     nextCookies(),
   ],
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: 'pg',
   }),
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
-      if (ctx.path.startsWith("/sign-up")) {
+      if (ctx.path.startsWith('/sign-up')) {
         const user = ctx.context.newSession?.user ?? {
           name: ctx.body.name,
           email: ctx.body.email,
