@@ -46,7 +46,15 @@ type ExportBounds = {
 	height: number;
 };
 
-// 1. Build the editor object that will contain all the methods for manipulating the canvas. This object will be created once and memoized, so it doesn't cause unnecessary re-renders. Takes inspiration from the Fabric.js canvas API (fabric-react package / react-canvas).
+/**
+ * Step 1: Build the editor object.
+ * @param props - The properties required to build the editor object.
+ * @returns The editor object with all the methods for manipulating the canvas.
+ * @remarks
+ * Build the editor object that will contain all the methods for manipulating the canvas.
+ * This object will be created once and memoized, so it doesn't cause unnecessary re-renders.
+ * Takes inspiration from the Fabric.js canvas API (fabric-react package / react-canvas).
+ */
 const buildEditor = ({
 	save,
 	undo,
@@ -660,7 +668,14 @@ const buildEditor = ({
 	};
 };
 
-// 2. Create the useEditor hook that will initialize the canvas and provide the editor object to the components that need it. This hook will also handle resizing the canvas when the window size changes.
+/**
+ * Step 2: Create the useEditor hook.
+ * @param clearSelectionCallback - A callback function that will be called when the selection is cleared.
+ * @returns The editor object that provides methods for manipulating the canvas.
+ * @remarks
+ * This hook will handle the initialization of the canvas, manage its state, and provide the editor object to the components that need it.
+ * It will also handle resizing the canvas when the window size changes.
+ */
 export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 	// State for main canvas object, container, and selected objects
 	const [canvas, setCanvas] = useState<Canvas | null>(null);
@@ -703,7 +718,12 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 		canvas,
 	});
 
-	// Don't need to put dispatch functions inside of useMemo dependencies/dependency array, as they are guaranteed to be stable by React.
+    /**
+     * Step 3: Return the init and editor objects.
+     * @remarks
+     * The init object is responsible for initializing the canvas and container.
+     * The editor object provides methods for manipulating the canvas.
+     */
 	const editor = useMemo(() => {
 		if (!canvas) return undefined;
 
@@ -745,8 +765,9 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 		strokeDashArray,
 		selectedObjects,
 		autoZoom,
-	]);
+	]); // NOTE: Don't need to put dispatch functions inside of useMemo dependencies/dependency array, as they are guaranteed to be stable by React.
 
+    // The init object is responsible for initializing the canvas and container.
 	const init = useCallback(
 		({
 			initialCanvas,
@@ -755,7 +776,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 			initialCanvas: Canvas;
 			initialContainer: HTMLDivElement;
 		}) => {
-			// Customize the appearance of the selection controls
+			// Customize the appearance of the selection controls.
 			InteractiveFabricObject.ownDefaults = {
 				...InteractiveFabricObject.ownDefaults,
 				cornerColor: "#fff",
@@ -770,7 +791,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 				padding: 0,
 			};
 
-			// Create a clipping rectangle that matches the container size
+			// Create a clipping rectangle that matches the container size that will be used as the clipPath for the canvas.
 			const initialWorkspace = new Rect({
 				width: 500,
 				height: 800,
@@ -784,13 +805,16 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 				}),
 			});
 
-			// Set the canvas dimensions to match the container
+			// Set the canvas dimensions to match the container.
 			initialCanvas.setDimensions({
 				width: initialContainer.offsetWidth,
 				height: initialContainer.offsetHeight,
 			});
 
-			// Note: The order of these operations is important. The clipPath must be set after the object is added to the canvas, otherwise it will not work correctly. This might cause issues with the undo/redo history, as it adds multiple states. We can optimize this later by using a custom history implementation that ignores certain state changes (like adding the workspace object).
+			// Note: The order of these operations is important. 
+            // The clipPath must be set after the object is added to the canvas, otherwise it will not work correctly. 
+            // This might cause issues with the undo/redo history, as it adds multiple states. 
+            // TODO: We can optimize this later by using a custom history implementation that ignores certain state changes (like adding the workspace object).
 			initialCanvas.add(initialWorkspace);
 			initialCanvas.centerObject(initialWorkspace);
 			initialCanvas.set({ clipPath: initialWorkspace });
@@ -805,7 +829,10 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
 		[canvasHistoryRef, setHistoryIndex],
 	);
 
-	// Return the init object. Return the editor object.
+    /**
+     * Step 4: Return the init and editor objects.
+     * @returns An object containing the init and editor functions.
+     */
 	return {
 		init,
 		editor,
