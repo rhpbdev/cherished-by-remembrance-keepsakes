@@ -43,27 +43,16 @@ export const Navbar = ({
   activeTool,
   onChangeActiveTool,
 }: NavbarProps) => {
-  const [carSaleData, setCarSaleData] = useState<string | null>(null);
-  const [testOneData, setTestOneData] = useState<string | null>(null);
+  const [data, setData] = useState<string | null>(null);
 
   useEffect(() => {
     const loadCarSale = async () => {
-      const res = await fetch('/car_sale_codewithantonio.json');
+      const res = await fetch('/car_sale.json');
       const data = await res.json();
       if (!data) return;
-      setCarSaleData(JSON.stringify(data));
+      setData(JSON.stringify(data));
     };
     loadCarSale();
-  }, []);
-
-  useEffect(() => {
-    const loadTestOne = async () => {
-      const res = await fetch('/test_one.json');
-      const data = await res.json();
-      if (!data) return;
-      setTestOneData(JSON.stringify(data));
-    };
-    loadTestOne();
   }, []);
 
   return (
@@ -79,18 +68,11 @@ export const Navbar = ({
           <DropdownMenuContent align="start" className="min-w-60">
             <DropdownMenuGroup>
               <DropdownMenuItem
-                onClick={() => editor?.loadJson(carSaleData!)}
+                onClick={() => editor?.loadJson(data!)}
                 className="flex items-center gap-x-2"
               >
                 <FileIcon />
                 Load Car Sale
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => editor?.loadJson(testOneData!)}
-                className="flex items-center gap-x-2"
-              >
-                <FileIcon />
-                Load Test One
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => editor?.saveJson()}
