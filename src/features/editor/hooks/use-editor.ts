@@ -10,7 +10,7 @@ import {
 	InteractiveFabricObject,
 	FabricText,
 	FabricImage,
-	type TDataUrlOptions,
+	type TMat2D,
 } from "fabric";
 import { useCallback, useMemo, useState } from "react";
 
@@ -39,6 +39,13 @@ import { useAutoResize } from "@/features/editor/hooks/use-auto-resize";
 import { useCanvasEvents } from "@/features/editor/hooks/use-canvas-events";
 import { useAligningGuidelines } from "@/features/editor/hooks/use-aligning-guidelines";
 
+type ExportBounds = {
+	left: number;
+	top: number;
+	width: number;
+	height: number;
+};
+
 // 1. Build the editor object that will contain all the methods for manipulating the canvas. This object will be created once and memoized, so it doesn't cause unnecessary re-renders. Takes inspiration from the Fabric.js canvas API (fabric-react package / react-canvas).
 const buildEditor = ({
 	save,
@@ -62,49 +69,92 @@ const buildEditor = ({
 	setStrokeWidth,
 	setStrokeDashArray,
 }: BuildEditorProps): Editor => {
-	const generateSaveOptions = () => {
-		const { width, height, left, top } = getWorkspace() as Rect;
+    // Get the bounds of the workspace to be exported. Returns undefined if the workspace is not available.
+	const getExportBounds = (): ExportBounds | undefined => {
+		const workspace = getWorkspace();
+
+		if (!workspace) return undefined;
+
+		const center = workspace.getCenterPoint();
+
+        // Calculate the export bounds based on the center point and scaled dimensions of the workspace.
+        // NOTE: Do not use getScaledWidth()/getBoundingRect() as they include the stroke width.
+		const width = workspace.width * workspace.scaleX;
+		const height = workspace.height * workspace.scaleY;
 
 		return {
-			name: "Image",
-			format: "png",
-			quality: 1,
-			multiplier: 1,
+			left: center.x - width / 2,
+			top: center.y - height / 2,
 			width,
 			height,
-			left,
-			top,
-		} as TDataUrlOptions;
+		};
+	};
+
+    // Export the workspace by temporarily removing viewport transform, clip path, and shadow.
+    // The original state is restored after the export.
+	const exportWorkspace = (exporter: (bounds: ExportBounds) => void) => {
+		const workspace = getWorkspace();
+		const bounds = getExportBounds();
+
+		if (!workspace || !bounds) return;
+
+		const originalViewport = [...canvas.viewportTransform] as TMat2D;
+		const originalClipPath = canvas.clipPath;
+		const originalShadow = workspace.shadow;
+
+		canvas.clipPath = undefined;
+		workspace.set({ shadow: null });
+		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+
+		try {
+			exporter(bounds);
+		} finally {
+			workspace.set({ shadow: originalShadow });
+			canvas.clipPath = originalClipPath;
+			canvas.setViewportTransform(originalViewport);
+			autoZoom();
+		}
 	};
 
 	const savePng = () => {
-		const options = generateSaveOptions();
-		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+		exportWorkspace((bounds) => {
+			const dataUrl = canvas.toDataURL({
+				...bounds,
+				format: "png",
+				quality: 1,
+				multiplier: 3,
+			});
 
-		const dataUrl = canvas.toDataURL(options);
-
-        downloadFile(dataUrl, "png");
-        autoZoom();
+			downloadFile(dataUrl, "png");
+		});
 	};
 
 	const saveSvg = () => {
-		const options = generateSaveOptions();
-		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+		exportWorkspace(({ left, top, width, height }) => {
+			const svg = canvas.toSVG({
+				width: `${width}`,
+				height: `${height}`,
+				viewBox: { x: left, y: top, width, height },
+			});
 
-		const dataUrl = canvas.toDataURL(options);
-
-        downloadFile(dataUrl, "svg");
-        autoZoom();
+			downloadFile(
+				`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`,
+				"svg",
+			);
+		});
 	};
 
 	const saveJpg = () => {
-		const options = generateSaveOptions();
-		canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+		exportWorkspace((bounds) => {
+			const dataUrl = canvas.toDataURL({
+				...bounds,
+				format: "jpeg",
+				quality: 1,
+				multiplier: 3,
+			});
 
-		const dataUrl = canvas.toDataURL(options);
-
-        downloadFile(dataUrl, "jpg");
-        autoZoom();
+			downloadFile(dataUrl, "jpg");
+		});
 	};
 
 	const saveJson = async () => {
