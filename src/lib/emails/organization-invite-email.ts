@@ -1,4 +1,4 @@
-import { sendEmail } from "./send-email"
+import { sendEmail } from './send-email';
 
 export async function sendOrganizationInviteEmail({
   invitation,
@@ -6,10 +6,10 @@ export async function sendOrganizationInviteEmail({
   organization,
   email,
 }: {
-  invitation: { id: string }
-  inviter: { name: string }
-  organization: { name: string }
-  email: string
+  invitation: { id: string };
+  inviter: { name: string };
+  organization: { name: string };
+  email: string;
 }) {
   await sendEmail({
     to: email,
@@ -24,5 +24,5 @@ export async function sendOrganizationInviteEmail({
       </div>
     `,
     text: `You're invited to join the ${organization.name} organization\n\nHello ${inviter.name},\n\n${inviter.name} invited you to join the ${organization.name} organization. Please click the link below to accept/reject the invitation:\n\n${process.env.BETTER_AUTH_URL}/organizations/invites/${invitation.id}\n\nBest regards,\nYour App Team`,
-  })
+  });
 }

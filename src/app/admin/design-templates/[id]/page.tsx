@@ -5,27 +5,27 @@ import { notFound } from 'next/navigation';
 import ProductForm from '@/components/admin/product-form';
 
 export const metadata: Metadata = {
-	title: 'Update Design Template',
+  title: 'Update Design Template',
 };
 
 const AdminDesignTemplateUpdatePage = async (props: {
-	params: Promise<{
-		id: string;
-	}>;
+  params: Promise<{
+    id: string;
+  }>;
 }) => {
-	await requireAdmin();
+  await requireAdmin();
 
-	const { id } = await props.params;
+  const { id } = await props.params;
 
-	const product = await getProductById(id);
-	if (!product) return notFound();
+  const product = await getProductById(id);
+  if (!product) return notFound();
 
-	return (
-		<div className='space-y-8 max-w-5xl mx-auto'>
-			<h1 className='h2-bold'>Update Product</h1>
-			<ProductForm type='Update' product={product} productId={product.id} />
-		</div>
-	);
+  return (
+    <div className="mx-auto max-w-5xl space-y-8">
+      <h1 className="h2-bold">Update Product</h1>
+      <ProductForm type="Update" product={product} productId={product.id} />
+    </div>
+  );
 };
 
 export default AdminDesignTemplateUpdatePage;

@@ -33,11 +33,11 @@ export const FillColorSidebar = ({
     <ToolSidebarWrapper
       isOpen={activeTool === 'fill'}
       onClose={onClose}
-      title='Fill Color'
-      description='Change the fill color of the selected object.'
+      title="Fill Color"
+      description="Change the fill color of the selected object."
     >
       <ScrollArea>
-        <div className='p-4 space-y-6'>
+        <div className="space-y-6 p-4">
           <ColorPicker value={value} onChange={onChange} />
         </div>
       </ScrollArea>

@@ -3,20 +3,20 @@ import { requireAdmin } from '@/features/auth/auth-guard';
 import ProductForm from '@/components/admin/product-form';
 
 export const metadata: Metadata = {
-	title: 'Create Product',
+  title: 'Create Product',
 };
 
 const CreateProductPage = async () => {
-	await requireAdmin();
+  await requireAdmin();
 
-	return (
-		<>
-			<h2 className='h2-bold'>Create Product</h2>
-			<div className='my-8'>
-				<ProductForm type='Create' />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <h2 className="h2-bold">Create Product</h2>
+      <div className="my-8">
+        <ProductForm type="Create" />
+      </div>
+    </>
+  );
 };
 
 export default CreateProductPage;

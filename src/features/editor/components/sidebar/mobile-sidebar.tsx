@@ -17,7 +17,7 @@ export const MobileSidebar = ({
   onChangeActiveTool,
 }: MobileSidebarProps) => {
   return (
-    <nav className='md:hidden fixed inset-x-0 bottom-0 z-50 h-14 bg-muted border-t flex items-stretch'>
+    <nav className="fixed inset-x-0 bottom-0 z-50 flex h-14 items-stretch border-t bg-muted md:hidden">
       {SIDEBAR_ROUTES.map((route) => {
         const Icon = route.icon;
         const isActive = activeTool === route.tool;
@@ -25,15 +25,15 @@ export const MobileSidebar = ({
         return (
           <Button
             key={route.tool}
-            variant='ghost'
+            variant="ghost"
             onClick={() => onChangeActiveTool(route.tool)}
             className={cn(
-              'flex-1 h-full flex flex-col items-center justify-center gap-y-0.5 rounded-none border-0 px-1 text-muted-foreground hover:text-purple-500',
-              isActive && 'text-primary bg-white/60',
+              'flex h-full flex-1 flex-col items-center justify-center gap-y-0.5 rounded-none border-0 px-1 text-muted-foreground hover:text-purple-500',
+              isActive && 'bg-white/60 text-primary',
             )}
           >
-            <Icon className='size-5 shrink-0 stroke-2' />
-            <span className='text-[10px] font-medium capitalize leading-none'>
+            <Icon className="size-5 shrink-0 stroke-2" />
+            <span className="text-[10px] leading-none font-medium capitalize">
               {route.label}
             </span>
           </Button>
