@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
-
+import { requireAuth } from '@/lib/auth/require-auth';
 import { unsplash } from '@/services/unsplash';
 
 const DEFAULT_COUNT = 50;
 const DEFAULT_COLLECTION_IDS = ['317099'];
 
-const app = new Hono().get('/', async (c) => {
+const app = new Hono().get('/', requireAuth, async (c) => {
   const { data, error } = await unsplash.GET('/photos/random', {
     params: {
       query: {
