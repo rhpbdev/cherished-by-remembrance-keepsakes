@@ -42,6 +42,7 @@ import { useClipboard } from '@/features/editor/hooks/use-clipboard';
 import { useAutoResize } from '@/features/editor/hooks/use-auto-resize';
 import { useCanvasEvents } from '@/features/editor/hooks/use-canvas-events';
 import { useAligningGuidelines } from '@/features/editor/hooks/use-aligning-guidelines';
+import { useWindowEvents } from './use-window-events';
 
 type ExportBounds = {
   left: number;
@@ -724,6 +725,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   useAligningGuidelines({
     canvas,
   });
+
+  useWindowEvents();
 
   /**
    * Step 3: Return the init and editor objects.
